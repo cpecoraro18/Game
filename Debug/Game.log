@@ -1,0 +1,10 @@
+﻿  Player.cpp
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(9): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(10): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(132): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(133): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.exe
+  Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.pdb (Full PDB)
