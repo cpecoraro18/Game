@@ -14,7 +14,7 @@ public:
 	Map();
 	~Map() {}
 
-	void LoadMap(int arr[20][60], const char* background, std::vector<class Entity*> &entities);
+	void LoadMap(int arr[25][60], const char* background, std::vector<class Entity*> &entities);
 
 	void DrawMap();
 

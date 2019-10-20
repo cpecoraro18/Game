@@ -10,7 +10,7 @@
 class Player : public Entity {
 public:
 
-	Player(float x, float y, int h, int w);
+	Player(float x, float y, int h, int w, int nFrames, int frameSpeed);
 
 	~Player() {}
 

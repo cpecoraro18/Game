@@ -7,7 +7,7 @@ SDL_Surface* Window::gScreenSurface;
 
 SDL_Renderer* Window::gRenderer;
 
-SDL_Rect Window::camera = { 0, 0, 400, 320 };
+SDL_Rect Window::camera = { 0, 0, 50, 50};
 
 Window::Window() {
 
@@ -45,8 +45,6 @@ bool Window::init(const char* title, const int SCREEN_WIDTH, const int SCREEN_HE
 			}
 			//get window surface
 			Window::gScreenSurface = SDL_GetWindowSurface(Window::gWindow);
-			Window::camera = { 0, 0, 400, 400 };
-
 		}
 	}
 	return true;

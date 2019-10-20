@@ -39,10 +39,14 @@ public:
 	SDL_Texture* texture;
 	bool isAlive;
 	AABB* hitbox;
+	bool animated = false;
+	int frames = 0;
+	int speed = 100;
 
 private:
 
 	EntityType type_;
+	
 
 };
 

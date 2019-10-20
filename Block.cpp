@@ -13,7 +13,7 @@ Block::Block(float x, float y, float h, float w) {
 	src.x = src.y = 0;
 	dest.x = x - Window::camera.x;
 	dest.y = y - Window::camera.x;
-	dest.h = dest.w = 32;
+	dest.h = dest.w = 45;
 	src.h = 32;
 	src.w = 32;
 }
