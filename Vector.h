@@ -6,7 +6,7 @@
 class Vector {
 public:
 
-	Vector() : x(0), y(0) {}
+	Vector() : x(0.0), y(0.0) {}
 	Vector(float x, float y) : x(x), y(y) {}
 
 

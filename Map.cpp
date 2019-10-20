@@ -9,35 +9,40 @@ Map::Map() {
 
 }
 
-void Map::LoadMap(int arr[20][25], const char* background, std::vector<class Entity*> &entities) {
+void Map::LoadMap(int arr[20][60], const char* background, std::vector<class Entity*> &entities) {
 
 	//this->background = TextureManager::LoadTexture(background);
 
 
 	int type = 0;
 	for (int row = 0; row < 20; row++) {
-		for (int col = 0; col < 25; col++) {
+		for (int col = 0; col < 60; col++) {
 			type = arr[row][col];
 			Block* block;
 			switch (type) {
-			case 0:
+			case -1:
+				//block = new Block(col * 32, row * 32, 32, 32);
+				//block->loadtexture("Images/water.bmp");
+				//entities.push_back(block);
+				//blocks.push_back(block);
 				break;
-			case 1:
+			case 01:
 				block = new Block(col * 32, row * 32, 32, 32);
-				block->loadtexture("Images/grass.bmp");
+				block->loadtexture("Images/map1_1.png");
 				entities.push_back(block);
 				blocks.push_back(block);
 				break;
-			case 2:
-				block = new Block(col * 32, row * 32, 32, 32);
-				block->loadtexture("Images/dirt.bmp");
-				entities.push_back(block);
-				blocks.push_back(block);
-				break;
-			case 3:
+			case 00:
 
 				block = new Block(col * 32, row * 32, 32, 32);
-				block->loadtexture("Images/cloud.bmp");
+				block->loadtexture("Images/map1_0.png");
+				entities.push_back(block);
+				blocks.push_back(block);
+				break;
+			case 02:
+
+				block = new Block(col * 32, row * 32, 32, 32);
+				block->loadtexture("Images/map1_2.png");
 				entities.push_back(block);
 				blocks.push_back(block);
 				break;

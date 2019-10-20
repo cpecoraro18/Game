@@ -5,10 +5,10 @@
 #include "Window.h"
 #include <cmath>
 
-Vector* gravity = new Vector(0, 1);
-Vector* gFriction = new Vector(.85, 1);
-Vector* aFriction = new Vector(.99, 1);
-Vector* maxSpeed = new Vector(5, 15);
+Vector* gravity = new Vector(0, 1.0);
+Vector* gFriction = new Vector(.85, 1.0);
+Vector* aFriction = new Vector(.99, 1.0);
+Vector* maxSpeed = new Vector(5.0, 15.0);
 
 Player::Player(float x, float y, int h, int w) {
 	this->position = new Vector(x, y);
@@ -38,7 +38,9 @@ Player::Player(float x, float y, int h, int w) {
 
 void Player::update(std::vector<class Entity*> &entities) {
 	count++;
-
+	if (count % 5 == 0) {
+		//printf("X:%f  Y:%f\n", velocity->x, velocity->y);
+	}
 	velocity->operator+=(*gravity);
 	
 	velocity->operator+=(*acceleration);
@@ -46,17 +48,20 @@ void Player::update(std::vector<class Entity*> &entities) {
 	if (velocity->x > maxSpeed->x) {
 		velocity->x = maxSpeed->x;
 	}
-	else if (abs(velocity->x) > maxSpeed->x) {
+	else if (fabs(velocity->x) > maxSpeed->x) {
 		velocity->x = -1* maxSpeed->x;
 	}
 
-	if (abs(velocity->y) > maxSpeed->y) {
+	if (velocity->y > maxSpeed->y) {
 		velocity->y = maxSpeed->y;
+	}
+	else if (fabs(velocity->y) > maxSpeed->y) {
+		velocity->y = -1 * maxSpeed->y;
 	}
 
 	if (hitbox->leftside - Window::camera.x < 0 || hitbox->rightside - Window::camera.x > 800) {
 		position->x -= velocity->x;
-		velocity->x = 0;
+		velocity->x = velocity->x * -.5;
 	}
 	if  (hitbox->bottom - Window::camera.y > 640) {
 		position->y -= velocity->y;
@@ -78,9 +83,7 @@ void Player::update(std::vector<class Entity*> &entities) {
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x, position->y);
 	handleCollisions(entities, 0);
-	if (count % 10 == 0) {
-		//printf("X:%f  Y:%f\n", velocity->x, velocity->y);
-	}
+	
 
 }
 
@@ -90,16 +93,14 @@ void Player::handleCollisions(std::vector<class Entity*> &entities, int onx) {
 			if (velocity->x > 0 && onx == 1) {
 				// collision occurred on the right
 				position->x -= velocity->x;
-				velocity->x = 0;
-				handleCollisions(entities, onx);
-				//printf("right");
+				velocity->x = velocity->x*-.4;
+				return;
 			}
 			if (velocity->x < 0 && onx == 1) {
 				// collision occurred on the left
 				position->x -= velocity->x;
-				velocity->x = 0;
-				handleCollisions(entities, onx);
-				//printf("left");
+				velocity->x = velocity->x* -.4;
+				return;
 			}
 			if (velocity->y > 0 && onx == 0) {
 				// collision occurred on the bottom
@@ -107,7 +108,8 @@ void Player::handleCollisions(std::vector<class Entity*> &entities, int onx) {
 				velocity->y = 0;
 				mOnGround = true;
 				jumpCount = 0;
-				handleCollisions(entities, onx);
+				return;
+				
 			}
 			else {
 				mOnGround = false;
@@ -116,7 +118,7 @@ void Player::handleCollisions(std::vector<class Entity*> &entities, int onx) {
 				// collision occurred on the top
 				position->y -= velocity->y;
 				velocity->y = 0;
-				handleCollisions(entities, onx);
+				return;
 			}
 		}
 	}

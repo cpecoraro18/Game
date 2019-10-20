@@ -55,8 +55,6 @@ private:
 	bool airFriction;
 
 
-
-
 };
 
 #endif /* SRC_PLAYERH_H_ */
