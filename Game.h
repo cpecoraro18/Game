@@ -1,46 +1,34 @@
 #pragma once
 #ifndef SRC_GAME_H_
 #define SRC_GAME_H_
+#include <memory>
+#include <string>
+#include "SDL.h"
+#include "SDL_image.h"
+#include "StateMachine.h"
 
+struct GameData {
+	StateMachine machine;
+	SDL_Renderer *renderer;
+	SDL_Window *window;
+	SDL_Surface *surface;
+	SDL_Rect camera;
+};
 
-#include "Window.h"
-#include "Entity.h"
-#include "Map.h"
-#include <vector>
+typedef std::shared_ptr<GameData> GameDataRef;
 
 class Game {
+
 public:
+	Game(int width, int height, const char* title);
 
-	Game() {}
-
-	~Game() {}
-
-	bool init();
-
-	void run();
-
-
-	void handleEvents(SDL_Event event);
-
-	void update();
-
-	//void render();
-
-	void clean();
-
-
+	static bool running;
+	
 private:
-	Window* window;
-	static SDL_Event event;
-	bool running;
+	
+	
+	GameDataRef _data = std::make_shared<GameData>();
 
-	std::vector<class Entity*> entities;
-	Entity* player;
-	Map* map;
-	const int FPS = 60;
-	const int frameDelay = 1000/FPS;
-	Uint32 frameStart;
-	int frameTime;
-
+	void Run();
 };
 #endif /* SRC_GAME_H_ */

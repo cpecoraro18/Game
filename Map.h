@@ -6,26 +6,36 @@
 #include "SDL_image.h"
 #include "Block.h"
 #include "Entity.h"
+#include "Game.h"
 #include <vector>
 
 class Map {
 public:
 
-	Map();
+	Map() {}
+	Map(GameDataRef data);
 	~Map() {}
 
-	void LoadMap(int arr[25][60], const char* background, std::vector<class Entity*> &entities);
+	void LoadCollidables(char* path);
 
-	void DrawMap();
+	void LoadBackground(char* path);
+
+	void LoadCoins(char* path);
+
+	void UpdateMap(float dt);
+
+	void DrawMap(GameDataRef data);
+	
+	std::vector<class Entity*> getCollidables() { return collidables; }
 
 private:
 	SDL_Rect src, dest;
 	std::vector<class Block*> blocks;
-	SDL_Texture* dirt;
-	SDL_Texture* grass;
-	SDL_Texture* water;
-	SDL_Texture* cloud;
-	SDL_Texture* background;
+	std::vector<class Entity*> collidables;
+	int mapWidth;
+	int mapHeight;
+
+	GameDataRef data;
 
 
 

@@ -150,28 +150,41 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Spike.cpp" />
+    <ClCompile Include="SplashState.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="DEFINITIONS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Entity_type.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MenuState.h" />
+    <ClInclude Include="SplashState.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="Key.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pose.h" />
+    <ClInclude Include="Spike.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

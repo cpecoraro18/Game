@@ -1,0 +1,6 @@
+#pragma once
+
+#define SCREEN_WIDTH 900
+#define SCREEN_HEIGHT 650
+
+#define SPLASH_SCENE_BACKGROUND_FILEPATH "/"

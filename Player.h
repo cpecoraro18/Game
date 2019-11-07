@@ -3,6 +3,7 @@
 #define SRC_PLAYERH_H_
 
 #include "Entity.h"
+#include "Game.h"
 
 
 
@@ -10,19 +11,25 @@
 class Player : public Entity {
 public:
 
-	Player(float x, float y, int h, int w, int nFrames, int frameSpeed);
+	Player(float x, float y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
+
+	Player(float x, float y, int h, int w, GameDataRef data);
 
 	~Player() {}
 
-	void update(std::vector<class Entity*> &entities);
+	void update(std::vector<class Entity*> collidables, float dt);
 
-	void loadtexture(const char* path);
+	void loadtexture(const char* path, int tilex, int tiley);
+
+	void loadHitboxTexture(const char* path, int tilex, int tiley);
 
 	void draw();
 
 	void handleinput(SDL_Event event);
 
-	void handleCollisions(std::vector<class Entity*> &entities, int onx);
+	void handleCollisions(std::vector<class Entity*> &collidables, int onx);
+
+	void animate();
 
 	void goRight();
 
@@ -30,10 +37,10 @@ public:
 
 	void jump();
 
+	void die();
+
 	Vector getPosition() { return *position; }
 
-
-private:
 	bool mPushedRightWall;
 	bool mPushesRightWall;
 
@@ -46,9 +53,15 @@ private:
 	bool mWasAtCeiling;
 	bool mAtCeiling;
 
+private:
+
+	GameDataRef data;
 	int count;
+	int coinCount;
+	int keyCount;
 
 	int jumpCount;
+	int jumpSpriteCounter;
 
 	bool groundFriction;
 
