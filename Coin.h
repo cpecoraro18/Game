@@ -12,8 +12,9 @@ public:
 	Coin(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
 	~Coin() {}
 
-	void loadtexture(const char* path, int tilex, int tiley);
-	void loadHitboxTexture(const char* path, int tilex, int tiley);
+	void loadtexture(const char* path, const char* name, int tilex, int tiley);
+	void loadtexture(const char* name, int tilex, int tiley);
+	void loadHitboxTexture(const char* name, int tilex, int tiley);
 	void update(std::vector<class Entity*> collidables, float dt);
 	void handleinput(SDL_Event event);
 	void handleCollision();

@@ -24,13 +24,13 @@ public:
 
 	void UpdateMap(float dt);
 
-	void DrawMap(GameDataRef data);
+	void DrawMap();
 	
 	std::vector<class Entity*> getCollidables() { return collidables; }
 
 private:
 	SDL_Rect src, dest;
-	std::vector<class Block*> blocks;
+	SDL_Texture* background;
 	std::vector<class Entity*> collidables;
 	int mapWidth;
 	int mapHeight;

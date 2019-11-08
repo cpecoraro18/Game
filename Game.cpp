@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "GameState.h"
 #include "SplashState.h"
 #include "State.h"
 #include <algorithm>
@@ -31,11 +30,11 @@ Game::Game(int width, int height, const char* title) {
 			}
 			//get window surface
 			_data->surface = SDL_GetWindowSurface(_data->window);
-			_data->camera = { 0, 0, 800, 640 };
+			_data->camera = { 0, 0, width, height };
 		}
 	}
 	//add states
-	_data->machine.AddState(StateRef(new GameState(_data)));
+	_data->machine.AddState(StateRef(new SplashState(_data)));
 	this->Run();
 }
 

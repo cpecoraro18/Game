@@ -20,6 +20,7 @@ private:
 	GameDataRef data;
 	SDL_Texture *_background;
 	SDL_Rect src, dest;
+	int count = 0;
 };
 
 #endif /* SRC_SPLASHSTATE_H_ */

@@ -1,21 +1,3 @@
-﻿  Player.cpp
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(8): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(9): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(40): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(56): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(66): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(67): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(108): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(143): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(150): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(260): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(261): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(262): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(263): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-c:\users\chris\documents\visual studio 2015\projects\game\game\player.cpp(320): warning C4305: '*=': truncation from 'double' to 'float'
+﻿  SplashState.cpp
   Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.exe
   Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.pdb (Full PDB)

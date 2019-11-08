@@ -1,6 +1,8 @@
 #include "SplashState.h"
 #include "TextureManager.h"
+#include <time.h>
 #include "GameState.h"
+#include "MenuState.h"
 #include "DEFINITIONS.h"
 
 SplashState::SplashState(GameDataRef data) : data(data){
@@ -8,7 +10,8 @@ SplashState::SplashState(GameDataRef data) : data(data){
 }
 
 bool SplashState::Init() {
-	_background = TextureManager::LoadTexture("Images/SplashScreen.png", data);
+	data->texmanager.LoadTexture("Images/SplashScreen.png", "splash background", data->renderer);
+	_background = data->texmanager.GetTexture("splash background");
 	src.x = 0;
 	src.y = 0;
 	src.h = 32;
@@ -38,17 +41,21 @@ void SplashState::HandleInput() {
 			{
 
 			case SDLK_RETURN:
-				data->machine.AddState(StateRef(new GameState(data)));
+				data->machine.AddState(StateRef(new MenuState(data)));
 				break;
 			}
 		}
 	}
 }
 void SplashState::Update(float dt) {
-
+	count++;
+	if (count > 500) {
+		data->machine.AddState(StateRef(new MenuState(data)));
+	}
+	
 }
 void SplashState::Draw() {
 	SDL_RenderClear(this->data->renderer);
-	TextureManager::Draw(_background, src, dest, data);
+	data->texmanager.Draw(_background, src, dest, data->renderer);
 	SDL_RenderPresent(data->renderer);
 }

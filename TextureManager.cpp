@@ -2,15 +2,20 @@
 #include "SDL_image.h"
 #include <stdio.h>
 
-SDL_Texture* TextureManager::LoadTexture(const char* texture, GameDataRef data) {
+void TextureManager::LoadTexture(const char* texture, const char* name, SDL_Renderer* renderer) {
 
 	SDL_Surface* tempSurface = IMG_Load(texture);
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(data->renderer, tempSurface);
-
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tempSurface);
+	if (tex != NULL) {
+		this->_textures[name] = tex;
+	}
 	SDL_FreeSurface(tempSurface);
-	return tex;
+}
+SDL_Texture *TextureManager::GetTexture(const char* name) {
+	return this->_textures.at(name);
 }
 
-void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, GameDataRef data) {
-	SDL_RenderCopy(data->renderer, tex, &src, &dest);
+
+void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer) {
+	SDL_RenderCopy(renderer, tex, &src, &dest);
 }

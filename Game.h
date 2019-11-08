@@ -6,9 +6,11 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "StateMachine.h"
+#include "TextureManager.h"
 
 struct GameData {
 	StateMachine machine;
+	TextureManager texmanager;
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 	SDL_Surface *surface;

@@ -40,22 +40,27 @@ Block::Block(GameDataRef data, float x, float y, float h, float w, int nFrames, 
 	speed = frameSpeed;
 }
 
-
-void Block::loadtexture(const char* path, int tilex, int tiley) {
-	this->texture = TextureManager::LoadTexture(path, data);
+void Block::loadtexture(const char* path, const char* name, int tilex, int tiley) {
+	data->texmanager.LoadTexture(path, name, data->renderer);
+	this->texture = data->texmanager.GetTexture(name);
+	src.x = tilex;
+	src.y = tiley;
+}
+void Block::loadtexture(const char* name, int tilex, int tiley) {
+	this->texture = data->texmanager.GetTexture(name);
 	src.x = tilex;
 	src.y = tiley;
 }
 
-void Block::loadHitboxTexture(const char* path, int tilex, int tiley) {
-	this->hitboxTexture = TextureManager::LoadTexture(path, data);
+void Block::loadHitboxTexture(const char* name, int tilex, int tiley) {
+	this->hitboxTexture = data->texmanager.GetTexture(name);
 }
 
 
 void Block::draw() {
 	dest.x = position->x - data->camera.x;
 	dest.y = position->y - data->camera.y;
-	TextureManager::Draw(texture, src, dest, data);
+	data->texmanager.Draw(texture, src, dest, data->renderer);
 }
 
 void Block::update(std::vector<class Entity*> collidables, float dt) {

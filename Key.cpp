@@ -24,15 +24,20 @@ Key::Key(GameDataRef data, float x, float y, float h, float w, int nFrames, int 
 }
 
 
-void Key::loadtexture(const char* path, int tilex, int tiley) {
-	this->texture = TextureManager::LoadTexture(path, data);
+void Key::loadtexture(const char* path, const char* name, int tilex, int tiley) {
+	data->texmanager.LoadTexture(path, name, data->renderer);
+	this->texture = data->texmanager.GetTexture(name);
 	src.x = tilex;
 	src.y = tiley;
-
+}
+void Key::loadtexture(const char* name, int tilex, int tiley) {
+	this->texture = data->texmanager.GetTexture(name);
+	src.x = tilex;
+	src.y = tiley;
 }
 
-void Key::loadHitboxTexture(const char* path, int tilex, int tiley) {
-	this->hitboxTexture = TextureManager::LoadTexture(path, data);
+void Key::loadHitboxTexture(const char* name, int tilex, int tiley) {
+	this->hitboxTexture = data->texmanager.GetTexture(name);
 }
 
 void Key::update(std::vector<class Entity*> collidables, float dt) {
@@ -52,6 +57,6 @@ void Key::handleinput(SDL_Event event) {
 void Key::draw() {
 	dest.x = position->x + 5 - data->camera.x;
 	dest.y = position->y + 5 - data->camera.y;
-	TextureManager::Draw(texture, src, dest, data);
+	data->texmanager.Draw(texture, src, dest, data->renderer);
 
 }

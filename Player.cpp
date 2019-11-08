@@ -9,6 +9,7 @@ Vector* gFriction = new Vector(.90, 1.0);
 Vector* aFriction = new Vector(.99, 1.0);
 Vector* maxSpeed = new Vector(2.0, 10.0);
 
+
 Player::Player(float x, float y, int h, int w, int nFrames, int frameSpeed, GameDataRef data): data(data) {
 	type_ = kPlayer;
 	this->position = new Vector(x, y);
@@ -47,29 +48,7 @@ Player::Player(float x, float y, int h, int w, int nFrames, int frameSpeed, Game
 
 }
 
-Player::Player(float x, float y, int h, int w, GameDataRef data) : data(data) {
-	this->position = new Vector(x, y);
-	this->velocity = new Vector();
-	this->acceleration = new Vector();
-	this->height = h;
-	this->width = w;
-	hitbox = new AABB(x + 25, y, w -60, h);
 
-	mOnGround = false;
-	groundFriction = false;
-	airFriction = false;
-
-	src.x = 32;
-	src.y = 0;
-	src.h = 32;
-	src.w = 32;
-	dest.x = position->x - data->camera.x;
-	dest.y = position->y - data->camera.y;
-	dest.h = height;
-	dest.w = width;
-	count = 0;
-	jumpCount = 0;
-}
 
 void Player::update(std::vector<class Entity*> collidables, float dt) {
 	//printf("%f\n", dt);
@@ -248,21 +227,27 @@ void Player::animate() {
 	src.x = src.w*static_cast<int>((SDL_GetTicks() / speed) % frames);
 }
 
-void Player::loadtexture(const char* path, int tilex, int tiley) {
-	this->texture = TextureManager::LoadTexture(path, data);
+void Player::loadtexture(const char* path, const char* name, int tilex, int tiley) {
+	data->texmanager.LoadTexture(path, name, data->renderer);
+	texture = data->texmanager.GetTexture(name);
+
 }
 
-void Player::loadHitboxTexture(const char* path, int tilex, int tiley) {
-	this->hitboxTexture = TextureManager::LoadTexture(path, data);
+void Player::loadtexture(const char* name, int tilex, int tiley) {
+	texture = data->texmanager.GetTexture(name);
+
 }
 
+void Player::loadHitboxTexture(const char* name, int tilex, int tiley) {
+	this->hitboxTexture = data->texmanager.GetTexture(name);
+}
 void Player::draw() {
 	dest.x = position->x-data->camera.x;
 	dest.y = position->y-data->camera.y;
 	destHitbox.x = position->x + 25 - data->camera.x;
 	destHitbox.y = position->y + 25- data->camera.y;
 
-	TextureManager::Draw(texture, src, dest, data);
+	data->texmanager.Draw(texture, src, dest, data->renderer);
 	//TextureManager::Draw(hitboxTexture, srcHitbox, destHitbox);
 
 }

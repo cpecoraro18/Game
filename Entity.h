@@ -21,7 +21,8 @@ public:
 	virtual void update(std::vector<class Entity*> collidables, float dt) = 0;
 	virtual void draw() = 0;
 	virtual void handleinput(SDL_Event event) = 0;
-	virtual void loadtexture(const char* path, int tilex, int tiley) = 0;
+	virtual void loadtexture(const char* path, const char* name, int tilex, int tiley) = 0;
+	virtual void loadtexture(const char * name, int tilex, int tiley) = 0;
 	virtual void loadHitboxTexture(const char* path, int tilex, int tiley) = 0;
 	virtual void handleCollision() {};
 

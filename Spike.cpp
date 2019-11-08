@@ -24,17 +24,22 @@ Spike::Spike(GameDataRef data, float x, float y, float h, float w, bool flipped)
 }
 
 
-void Spike::loadtexture(const char* path, int tilex, int tiley) {
-	this->texture = TextureManager::LoadTexture(path, data);
+void Spike::loadtexture(const char* path, const char* name, int tilex, int tiley) {
+	data->texmanager.LoadTexture(path, name, data->renderer);
+	texture = data->texmanager.GetTexture(name);
+
+}
+
+void Spike::loadtexture(const char* name, int tilex, int tiley) {
+	texture = data->texmanager.GetTexture(name);
 	src.x = tilex;
 	src.y = tiley;
 
 }
 
-void Spike::loadHitboxTexture(const char* path, int tilex, int tiley) {
-	this->hitboxTexture = TextureManager::LoadTexture(path, data);
+void Spike::loadHitboxTexture(const char* name, int tilex, int tiley) {
+	this->hitboxTexture = data->texmanager.GetTexture(name);
 }
-
 void Spike::update(std::vector<class Entity*> collidables, float dt) {
 	hitbox->setDimentions(position->x+20, position->y+40);
 }
@@ -51,6 +56,6 @@ void Spike::handleinput(SDL_Event event) {
 void Spike::draw() {
 	dest.x = position->x - data->camera.x;
 	dest.y = position->y - data->camera.y;
-	TextureManager::Draw(texture, src, dest, data);
+	data->texmanager.Draw(texture, src, dest, data->renderer);
 
 }
