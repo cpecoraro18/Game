@@ -1,6 +1,6 @@
 #include "MenuState.h"
 #include "GameState.h"
-
+#include "MapState.h"
 #include "DEFINITIONS.h"
 
 MenuState::MenuState(GameDataRef data) : data(data){
@@ -8,17 +8,19 @@ MenuState::MenuState(GameDataRef data) : data(data){
 }
 
 bool MenuState::Init() {
+	printf("Loading Menu textures...\n");
 	data->texmanager.LoadTexture("Images/MenuBackground.png", "menu background", data->renderer);
+	printf("Textures loaded\n");
 	_background = data->texmanager.GetTexture("menu background");
 	src.x = 0;
 	src.y = 0;
-	src.h = 32;
-	src.w = 32;
+	src.h = 640;
+	src.w = 832;
 	dest.x = 0;
 	dest.y = 0;
 	dest.h = SCREEN_HEIGHT;
 	dest.w = SCREEN_WIDTH;
-	Button* startButton = new Button(data, 350, 200, 200, 200);
+	Button* startButton = new Button(data, 350, 250, 200, 200);
 	startButton->loadtexture("Images/PlayButton.png", "play button", 0, 0);
 	buttons.push_back(startButton);
 
@@ -39,13 +41,14 @@ void MenuState::HandleInput() {
 		case SDL_MOUSEBUTTONDOWN:
 			SDL_GetMouseState(&mouseX, &mouseY);
 			HandleClick(mouseX, mouseY);
+			break;
 		case SDL_KEYDOWN:
 			//Select surfaces based on key press
 			switch (event.key.keysym.sym)
 			{
 
 			case SDLK_RETURN:
-				data->machine.AddState(StateRef(new GameState(data)));
+				data->machine.AddState(StateRef(new MapState(data)));
 				break;
 			}
 		}
@@ -58,15 +61,24 @@ void MenuState::HandleClick(int x, int y) {
 		if (x > button->dest.x && x < button->dest.x + button->dest.w && y > button->dest.y && y < button->dest.y + button->dest.h) {
 			button->handleClick();
 			
-			data->machine.AddState(StateRef(new GameState(data)));
+			data->machine.AddState(StateRef(new MapState(data)));
 			SDL_Delay(100);
 		}
 	}
 }
 void MenuState::Update(float dt) {
+	int mouseX, mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);
 	for (auto button : buttons) {
 		button->update();
+		if (mouseX > button->dest.x && mouseX < button->dest.x + button->dest.w && mouseY > button->dest.y && mouseY < button->dest.y + button->dest.h) {
+			button->hovering = true;
+		}
+		else {
+			button->hovering = false;
+		}
 	}
+	
 }
 void MenuState::Draw() {
 	SDL_RenderClear(this->data->renderer);

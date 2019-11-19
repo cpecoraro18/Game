@@ -22,32 +22,32 @@
     <ProjectGuid>{0138ECAB-5545-43CD-9A85-A89068AE223F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -104,10 +104,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\SDL2_mixer\include;C:\Dev\SDL2_image\include;C:\Dev\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Dev\SDL2_mixer\lib\x64;C:\Dev\SDL2_image\lib\x64;C:\Dev\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,26 +142,37 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Dev\SDL2_mixer\include;C:\Dev\SDL2_image\include;C:\Dev\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Dev\SDL2_mixer\lib\x64;C:\Dev\SDL2_image\lib\x64;C:\Dev\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="CoinCounter.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Key.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapState.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Spike.cpp" />
     <ClCompile Include="SplashState.cpp" />
@@ -168,16 +182,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Bird.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Bow.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="CoinCounter.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="DEFINITIONS.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Entity_type.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Knight.h" />
+    <ClInclude Include="MapState.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="PauseState.h" />
     <ClInclude Include="SplashState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Key.h" />

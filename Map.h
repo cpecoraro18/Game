@@ -41,4 +41,4 @@ private:
 
 };
 
-#endif /* SRC_GAME_H_ */
+#endif /* SRC_MAP_H_ */

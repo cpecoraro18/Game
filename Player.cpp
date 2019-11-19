@@ -2,77 +2,73 @@
 #include "SDL.h"
 #include "TextureManager.h"
 #include "Map.h"
+#include <algorithm>
+
 #include <cmath>
 
-Vector* gravity = new Vector(0, 15);
-Vector* gFriction = new Vector(.90, 1.0);
-Vector* aFriction = new Vector(.99, 1.0);
-Vector* maxSpeed = new Vector(2.0, 10.0);
 
+Vector* maxSpeed = new Vector(5, 15);
 
-Player::Player(float x, float y, int h, int w, int nFrames, int frameSpeed, GameDataRef data): data(data) {
+Player::Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data) : Entity(x, y, h, w, nFrames, frameSpeed, data) {
+
 	type_ = kPlayer;
-	this->position = new Vector(x, y);
-	this->velocity = new Vector();
-	this->acceleration = new Vector();
-	this->height = h;
-	this->width = w;
-	hitbox = new AABB(x+25, y-25, w - 55, h-30);
-	srcHitbox.x = 0;
-	srcHitbox.y = 0;
-	srcHitbox.h = 32;
-	srcHitbox.w = 32;
-	destHitbox.x = x + 25 - data->camera.x;
-	destHitbox.y = y -25- data->camera.y;
-	destHitbox.w = w - 60;
-	destHitbox.h = h - 30;
+
+	hitboxXBuffer = w*.25;
+	hitboxYBuffer = h*.25;
+	hitboxWidthBuffer = w * .66 * -1;
+	hitboxHeightBuffer = h*.33 * -1;
+
+	hitbox = new AABB(x + hitboxWidthBuffer, y + hitboxYBuffer, w + hitboxWidthBuffer, h + hitboxHeightBuffer);
+	src.x = 0;
+	src.y = 0;
+	src.w = 32;
+	src.h = 32;
+
+	destHitbox.x = x + hitboxXBuffer - data->camera.x;
+	destHitbox.y = y + hitboxYBuffer - data->camera.y;
+	destHitbox.w = w + hitboxWidthBuffer;
+	destHitbox.h = h + hitboxHeightBuffer;
+	
 	mOnGround = false;
 	groundFriction = false;
 	airFriction = false;
 
-	animated = true;
-	frames = nFrames;
-	speed = frameSpeed;
-	src.x = 0;
-	src.y = 0;
-	src.h = 32;
-	src.w = 32;
-	dest.x = position->x - data->camera.x;
-	dest.y = position->y - data->camera.y;
-	dest.h = height;
-	dest.w = width;
 	count = 0;
 	coinCount = 0;
+	keyCount = 0;
 	jumpCount = 0;
 	jumpSpriteCounter = 0;
+
+	shooting = false;
+	armtexture = data->texmanager.GetTexture("armandbow");
+	srcarm.x = 0;
+	srcarm.y = 0;
+	srcarm.h = 32;
+	srcarm.w = 32;
+	destarm.x = x +7 - data->camera.x;
+	destarm.y = y + 10 - data->camera.y;
+	destarm.h = h;
+	destarm.w = w;
+
+	jumpSound = Mix_LoadWAV("Images/Jump.wav");
+	bowSound = Mix_LoadWAV("Images/BowSound.wav");
+
+	coinCounter = new CoinCounter(data);
+
 
 }
 
 
 
-void Player::update(std::vector<class Entity*> collidables, float dt) {
-	//printf("%f\n", dt);
+void Player::update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt) {
 	count++;
-
-	if (animated) {
-		animate();
-
-	}
-
-	if (count % 50 == 0) {
-		//printf("X:%f  Y:%f\n", velocity->x, velocity->y);
-		
-	}
-	velocity->x += gravity->x * dt;
-	velocity->y += gravity->y * dt;
-	velocity->x += acceleration->x * dt;
-	velocity->y += acceleration->y * dt;
-
+	Entity::update(collidables, dt);
+	//cap max speed
 	if (velocity->x > maxSpeed->x) {
 		velocity->x = maxSpeed->x;
 	}
 	else if (fabs(velocity->x) > maxSpeed->x) {
-		velocity->x = -1* maxSpeed->x;
+		velocity->x = -1 * maxSpeed->x;
 	}
 
 	if (velocity->y > maxSpeed->y) {
@@ -82,11 +78,22 @@ void Player::update(std::vector<class Entity*> collidables, float dt) {
 		velocity->y = -1 * maxSpeed->y;
 	}
 
+	//handle edge of screen cases
 	if (hitbox->leftside - data->camera.x < 0 || hitbox->rightside - data->camera.x > 800) {
 		position->x -= velocity->x;
 		velocity->x = velocity->x * -.5;
+
 	}
-	if  (hitbox->bottom - data->camera.y > 640) {
+
+	if (animated) {
+		Animate();
+	}
+
+	if (count % 20 == 0) {
+		//printf("X:%f  Y:%f\n", velocity->x, velocity->y);
+	}
+
+	if (hitbox->bottom - data->camera.y > 640) {
 		die();
 
 	}
@@ -94,23 +101,37 @@ void Player::update(std::vector<class Entity*> collidables, float dt) {
 	//change x position
 	oldPosition = position;
 	position->x += velocity->x;
-	hitbox->setDimentions(position->x+25, position->y+25);
-	handleCollisions(collidables, 1);
-	if (groundFriction) {
-		velocity->operator*=(*gFriction);
-	}
-	
-	
-	//change y position
-	oldPosition = position;
-	position->y += velocity->y;
-	hitbox->setDimentions(position->x + 25, position->y + 25);
-	handleCollisions(collidables, 0);
-	
+	hitbox->setDimentions(position->x+ hitboxXBuffer, position->y+hitboxYBuffer);
+	handleCollisions(collidables, 1, dt);
+	handleCollisions(enemies, 1, dt);
 
+	//handle friction
+	if (groundFriction) {
+		velocity->x *= .85;
+	}
+	else {
+		velocity->x *= .95;
+	}
+	position->y += velocity->y;
+	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
+	handleCollisions(collidables, 0, dt);
+	handleCollisions(enemies, 1, dt);
+
+	for (int i = 0; i < arrows.size(); i++) {
+		arrows[i]->update(collidables, enemies, dt);
+		coinCount += arrows[i]->getNumCoinsHit();
+			
+		if (arrows[i]->dead) {
+			arrows.erase(arrows.begin() + i);
+			
+		}
+
+	}
+	coinCounter->Notify(coinCount);
+	
 }
 
-void Player::handleCollisions(std::vector<class Entity*> &collidables, int onx) {
+void Player::handleCollisions(std::vector<class Entity*> &collidables, int onx, float dt) {
 	for (auto&& ent : collidables) {
 
 		if (ent != this && !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {
@@ -154,27 +175,28 @@ void Player::handleCollisions(std::vector<class Entity*> &collidables, int onx) 
 			case(kCoin):
 				coinCount++;
 				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollision();
+				ent->handleCollisions();
 				ent->dead = true;
 				break;
 			case(kKey):
 				keyCount++;
 				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollision();
+				ent->handleCollisions();
 				break;
 			case(kSpike):
 				die();
 				break;
-				
+
 
 			}
-			
+
 		}
 	}
 
 }
 
-void Player::animate() {
+void Player::Animate() {
+	//in air and moving right
 	if (fabs(velocity->y) > 1 && velocity->x > 0.5) {
 		if (jumpSpriteCounter == 0) {
 			src.x = 0;
@@ -184,6 +206,7 @@ void Player::animate() {
 		frames = 3;
 		speed = 200;
 	}
+	//in air and moving left
 	else if (fabs(velocity->y) > 1 && velocity->x < -0.5) {
 		if (jumpSpriteCounter == 0) {
 			src.x = 0;
@@ -193,6 +216,7 @@ void Player::animate() {
 		frames = 3;
 		speed = 200;
 	}
+	//in air and not moving on x axis
 	else if (fabs(velocity->y) > 1.5  && fabs(velocity->x) < 0.5) {
 		if (jumpSpriteCounter == 0) {
 			src.x = 0;
@@ -202,57 +226,120 @@ void Player::animate() {
 		frames = 3;
 		speed = 200;
 	}
+	//moving right and on ground
 	else if (velocity->x > .5 && mOnGround) {
 		speed = 100;
 		jumpSpriteCounter = 0;
 		src.y = 32;
 		frames = 4;
 	}
+	//moving left and on ground
 	else if (velocity->x < -.5 && mOnGround) {
 		speed = 100;
 		jumpSpriteCounter = 0;
 		src.y = 64;
 		frames = 4;
 	}
+	//not moving and on ground
 	else if (mOnGround) {
 		speed = 100;
 		jumpSpriteCounter = 0;
 		src.y = 0;
 		frames = 3;
 	}
+	//shooting animations
+	if (shooting) {
+		//calculate bow angle
+		double dy = mouseY - (position->y - data->camera.y);
+		double dx = mouseX - (position->x - data->camera.x);
+		double theta = atan2(dy, dx);
+		angle = ((theta * 180) / M_PI);
+
+		if (dx > 0) {
+			shootingRight = true;
+			shootingLeft = false;
+		}
+		else {
+			shootingLeft = true;
+			shootingRight = false;
+		}
+
+		if (abs(velocity->x) > 0.5 && mOnGround && shootingRight) {
+			speed = 100;
+			src.y = 256;
+			frames = 4;
+		}
+		else if (abs(velocity->x) > 0.5 && mOnGround && shootingLeft) {
+			speed = 100;
+			src.y = 288;
+			frames = 4;
+		}
+		else {
+			if (shootingRight) {
+				src.x = 0;
+				src.y = 192;
+				srcarm.x = 0;
+			}
+			else if (shootingLeft) {
+				src.x = 32;
+				src.y = 224;
+				srcarm.x = 32;
+			}
+			frames = 1;
+		}
+	}
+
 	if (jumpSpriteCounter >  8) {
 		src.x = src.w*(frames-1);
 		return;
 	}
-	src.x = src.w*static_cast<int>((SDL_GetTicks() / speed) % frames);
+	
+	Entity::Animate();
 }
 
-void Player::loadtexture(const char* path, const char* name, int tilex, int tiley) {
-	data->texmanager.LoadTexture(path, name, data->renderer);
-	texture = data->texmanager.GetTexture(name);
 
-}
-
-void Player::loadtexture(const char* name, int tilex, int tiley) {
-	texture = data->texmanager.GetTexture(name);
-
-}
-
-void Player::loadHitboxTexture(const char* name, int tilex, int tiley) {
-	this->hitboxTexture = data->texmanager.GetTexture(name);
-}
 void Player::draw() {
 	dest.x = position->x-data->camera.x;
 	dest.y = position->y-data->camera.y;
-	destHitbox.x = position->x + 25 - data->camera.x;
-	destHitbox.y = position->y + 25- data->camera.y;
+	if (shootingRight) {
+		destarm.x = position->x + 7 - data->camera.x;
+	}
+	if (shootingLeft) {
+		destarm.x = position->x - 7 - data->camera.x;
+	}
+	
+	destarm.y = position->y - data->camera.y;
+	destHitbox.x = position->x + hitboxXBuffer - data->camera.x;
+	destHitbox.y = position->y + hitboxYBuffer- data->camera.y;
 
 	data->texmanager.Draw(texture, src, dest, data->renderer);
-	//TextureManager::Draw(hitboxTexture, srcHitbox, destHitbox);
+	if (shootingRight && shooting) {
+		data->texmanager.Draw(armtexture, srcarm, destarm, data->renderer, angle);
+	} if (shootingLeft && shooting) {
+		data->texmanager.Draw(armtexture, srcarm, destarm, data->renderer, angle - 180);
+	}
 
+	for (auto arrow : arrows) {
+		arrow->draw();
+	}
+
+	coinCounter->Display();
 }
 
-void Player::handleinput(SDL_Event event) {
+void Player::handleinput(SDL_Event event, const Uint8 *keystate) {
+
+	SDL_GetMouseState(&mouseX, &mouseY);
+	if (event.type == SDL_MOUSEBUTTONDOWN) {
+		shooting = true;
+		
+	}
+	if (event.type == SDL_MOUSEBUTTONUP) {
+		double dy = mouseY - (position->y - data->camera.y);
+		double dx = mouseX - (position->x - data->camera.x);
+		double theta = atan2(dy, dx);
+		shoot(cos(theta)*20, sin(theta)*20);
+		shooting = false;
+	}
 
 	if (event.type == SDL_KEYDOWN)
 	{
@@ -260,17 +347,13 @@ void Player::handleinput(SDL_Event event) {
 		switch (event.key.keysym.sym)
 		{
 
-		case SDLK_LEFT:
+		case SDLK_a:
 			groundFriction = false;
 			goLeft();
 			break;
-		case SDLK_RIGHT:
+		case SDLK_d:
 			groundFriction = false;
 			goRight();
-			break;
-		case SDLK_DOWN:
-			break;
-		case SDLK_UP:
 			break;
 		case SDLK_SPACE:
 			if (jumpCount < 2) {
@@ -283,54 +366,65 @@ void Player::handleinput(SDL_Event event) {
 			break;
 		}
 	}
-	else if (event.type == SDL_KEYUP) {
+	if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym)
 		{
-		case SDLK_LEFT:
-			acceleration->x = 0;
+		case SDLK_a:
+			acceleration->x = 0.0f;
 			groundFriction = true;
 			break;
-		case SDLK_RIGHT:
-			acceleration->x = 0;
+		case SDLK_d:
+			acceleration->x = 0.0f;
 			groundFriction = true;
-			break;
-		case SDLK_DOWN:
-			velocity->y = 0;
-			break;
-		case SDLK_UP:
-			velocity->y = 0;
 			break;
 		case SDLK_SPACE:
 			if (velocity->y < 0) {
-				velocity->y *= .4;
+				velocity->y *= .3;
 			}
-			
 			break;
 		default:
 			break;
 		}
-
 	}
 
+	if (keystate[SDL_SCANCODE_A]) {
+		goLeft();
+	}
+	if (keystate[SDL_SCANCODE_D]) {
+		goRight();
+	}
 }
 
 void Player::goRight() {
 	
-	acceleration->x = 7;
+	acceleration->x = 1.0f;
 }
 
 void Player::goLeft() {
-	acceleration->x = -7;
+	acceleration->x = -1.0f;
 }
 
 void Player::jump() {
 	jumpSpriteCounter = 0;
-	velocity->y = -4.5;
+	velocity->y = -15.0f;
+	Mix_PlayChannel(-1, jumpSound, 0);
 }
 
 void Player::die() {
-	position->y -= velocity->y;
 	velocity->y = 0;
 	position->x = 50;
 	position->y = 500;
+}
+
+void Player::shoot(float speedx, float speedy) {
+	Arrow* arrow = new Arrow(data, position->x + 10, position->y + 10, 55, 55, speedx, speedy);
+	arrow->loadHitboxTexture("hitbox", 0, 0);
+	arrows.push_back(arrow);
+	Mix_PlayChannel(-1, bowSound, 0);
+
+}
+
+void Player::aim() {
+	src.x = 32;
+	src.y = 0;
 }

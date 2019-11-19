@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SRC_BLOCK_H_
-#define SRC_BLOCK_H_
+#ifndef SRC_BUTTON_H_
+#define SRC_BUTTON_H_
 #include "SDL.h"
 #include "Game.h"
 
@@ -15,13 +15,20 @@ public:
 	void update();
 	void draw();
 	void handleClick();
+	
 
 
 	SDL_Rect src, dest;
+	bool hovering;
+
 private:
 	
 	SDL_Texture* texture;
 	GameDataRef data;
+	int width;
+	int height;
+	int x, y;
+	
 	bool animated;
 	int frames;
 	int speed;

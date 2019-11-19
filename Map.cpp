@@ -37,9 +37,11 @@ void Map::LoadCollidables(char* path) {
 			case -1:
 				break;
 			default:
+
 				block = new Block(data, col * 55, row * 55, 55, 55);
 				layer = type / 8;
 				block->loadtexture("tileset", type%8*32, layer*32);
+				block->loadHitboxTexture("hitbox", 0, 0);
 				collidables.push_back(block);
 				break;
 			}
@@ -111,6 +113,7 @@ void Map::LoadCoins(char* path) {
 			case 21:
 				ent = new Block(data, col * 55, row * 55, 55, 55);
 				ent->loadtexture("tileset", type % 8 * 32, layer * 32);
+				ent->loadHitboxTexture("hitbox", 0, 0);
 				collidables.push_back(ent);
 				break;
 			default:
@@ -138,7 +141,10 @@ void Map::DrawMap() {
 	for (auto&& block : collidables) {
 		if (block->position->x >= data->camera.x - buffer && block->position->x + block->width <= data->camera.x + data->camera.w + buffer &&
 			block->position->y >= data->camera.y - buffer && block->position->y + block->height <= data->camera.y + data->camera.h + buffer) {
+			
 			block->draw();
+			
+			
 		}
 	}
 

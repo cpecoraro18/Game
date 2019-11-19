@@ -19,3 +19,7 @@ SDL_Texture *TextureManager::GetTexture(const char* name) {
 void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer) {
 	SDL_RenderCopy(renderer, tex, &src, &dest);
 }
+
+void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer, double angle) {
+	SDL_RenderCopyEx(renderer, tex, &src, &dest, angle, NULL, SDL_FLIP_NONE);
+}

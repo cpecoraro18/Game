@@ -1,3 +1,5 @@
-﻿  SplashState.cpp
+﻿  GameState.cpp
+c:\users\chris\documents\visual studio 2015\projects\game\game\gamestate.cpp(62): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\users\chris\documents\visual studio 2015\projects\game\game\gamestate.cpp(63): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.exe
   Game.vcxproj -> C:\Users\Chris\documents\visual studio 2015\Projects\Game\Debug\Game.pdb (Full PDB)

@@ -49,7 +49,7 @@ void SplashState::HandleInput() {
 }
 void SplashState::Update(float dt) {
 	count++;
-	if (count > 500) {
+	if (count > 120) {
 		data->machine.AddState(StateRef(new MenuState(data)));
 	}
 	

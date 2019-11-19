@@ -2,8 +2,8 @@
 #ifndef SRC_COIN_H_
 #define SRC_COIN_H_
 #include "SDL.h"
+#include "SDL_mixer.h"
 #include "Entity.h"
-#include "Game.h"
 
 
 class Coin : public Entity {
@@ -11,19 +11,13 @@ public:
 
 	Coin(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
 	~Coin() {}
-
-	void loadtexture(const char* path, const char* name, int tilex, int tiley);
-	void loadtexture(const char* name, int tilex, int tiley);
-	void loadHitboxTexture(const char* name, int tilex, int tiley);
-	void update(std::vector<class Entity*> collidables, float dt);
-	void handleinput(SDL_Event event);
-	void handleCollision();
+	void update(std::vector<class Entity*> collidables, float dt) override;
+	void handleinput(SDL_Event event, const Uint8 *keystate);
+	void handleCollisions();
 	void draw();
 
 private:
-	SDL_Rect src, dest;
-	SDL_Texture* texture;
-	GameDataRef data;
+	Mix_Chunk* coinSound;
 };
 
 #endif /*SRC_COIN_H_ */

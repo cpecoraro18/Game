@@ -34,7 +34,7 @@ void StateMachine::ProcessStateChanges() {
 	}
 }
 
-StateRef &StateMachine::GetActiveState() {
+StateRef& StateMachine::GetActiveState() {
 	return this->_states.top();
 
 }

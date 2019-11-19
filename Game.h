@@ -5,6 +5,7 @@
 #include <string>
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
 
@@ -24,13 +25,20 @@ class Game {
 public:
 	Game(int width, int height, const char* title);
 
+	void Run();
+
+	void CalculateFPS();
 	static bool running;
 	
 private:
+	float fps;
+	float frameTime;
+	float maxFPS = 60;
+
 	
 	
 	GameDataRef _data = std::make_shared<GameData>();
 
-	void Run();
+	
 };
 #endif /* SRC_GAME_H_ */
