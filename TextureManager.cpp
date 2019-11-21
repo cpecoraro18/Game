@@ -23,3 +23,13 @@ void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Ren
 void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer, double angle) {
 	SDL_RenderCopyEx(renderer, tex, &src, &dest, angle, NULL, SDL_FLIP_NONE);
 }
+
+void TextureManager::DestroyTextures() {
+	std::map<const char*, SDL_Texture*>::iterator it;
+	for (it = _textures.begin(); it != _textures.end(); it++)
+	{
+		SDL_DestroyTexture(it->second);
+	}
+	_textures.clear();
+
+}

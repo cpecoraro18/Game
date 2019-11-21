@@ -22,19 +22,18 @@ public:
 	//free assets!!
 	~GameState();
 
+	void Identify() { printf("Game State"); }
+
 	bool Init();
-
 	void HandleInput();
-
 	void Update(float dt);
-
 	void Draw();
-
 	void HandleClick(int x, int y);
 
+	void Resume();
 	void clean();
 
-
+	bool playing;
 
 private:
 	GameDataRef data;
@@ -44,11 +43,10 @@ private:
 	Knight* knight;
 	Map* map;
 	Button* pauseButton;
-	const int FPS = 60;
-	const int frameDelay = 1000/FPS;
-	Uint32 frameStart;
+	
 	const Uint8 * keystate;
-	int frameTime;
+
+	Mix_Music* backgroundMusic;
 
 };
 #endif /* SRC_GAMESTATE_H_ */

@@ -9,7 +9,9 @@
 class SplashState : public State {
 public:
 	SplashState(GameDataRef data);
+	~SplashState();
 
+	void Identify() { printf("Splash State"); }
 	bool Init();
 
 	void HandleInput();

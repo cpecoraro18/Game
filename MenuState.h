@@ -11,7 +11,9 @@
 class MenuState : public State {
 public:
 	MenuState(GameDataRef data);
+	~MenuState();
 
+	void Identify() { printf("Menu State"); }
 	bool Init();
 
 	void HandleInput();
@@ -23,6 +25,8 @@ private:
 	GameDataRef data;
 	SDL_Texture *_background;
 	SDL_Rect src, dest;
+	Button* startButton;
+	Button* quitButton;
 	std::vector<class Button*> buttons;
 };
 

@@ -13,6 +13,9 @@ public:
 	void Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer);
 
 	void Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* renderer, double angle);
+
+	void DestroyTextures();
+
 private:
 	std::map<const char*, SDL_Texture*> _textures;
 

@@ -10,8 +10,10 @@ class Spike : public Entity {
 public:
 
 	Spike(GameDataRef data, float x, float y, float h, float w, bool flipped);
-	~Spike() {}
-	void update(std::vector<class Entity*> collidables, float dt) override;
+
+	~Spike();
+
+	void update(std::vector<class Entity*>, float dt) override;
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 	void handleCollisions();
 	void draw();

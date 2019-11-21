@@ -7,7 +7,6 @@ public:
 	AABB(float x, float y, float width, float height);
 
 	void setDimentions(float x, float y);
-
 	void setDimentions(float x, float y, float width, float height);
 
 	float rightside;

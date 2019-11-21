@@ -7,13 +7,22 @@ PauseState::PauseState(GameDataRef data, GameState* pausedGame) : data(data) {
 	game = pausedGame;
 }
 
-bool PauseState::Init() {
+PauseState::~PauseState() {
+	printf("Deleting pause state");
+	for (auto button : buttons) {
+		delete button;
+	}
+}
 
-	resumeButton = new Button(data, 350, 250, 200, 200);
-	resumeButton->loadtexture("Images/ResumeButton.png", "resume button", 0, 0);
+bool PauseState::Init() {
+	
+	resumeButton = new Button(data, SCREEN_WIDTH / 2 - BUTTON_WIDTH/2, SCREEN_HEIGHT / 3 , 
+		BUTTON_SPRITE_WIDTH, BUTTON_SPRITE_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
+	resumeButton->loadtexture("resume button", 0, 0);
 	buttons.push_back(resumeButton);
-	backButton = new Button(data, 350, 450, 200, 200);
-	backButton->loadtexture("Images/BackButton.png", "back button", 0, 0);
+	backButton = new Button(data, SCREEN_WIDTH / 2 - BUTTON_WIDTH/2, SCREEN_HEIGHT / 2,
+		BUTTON_SPRITE_WIDTH, BUTTON_SPRITE_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
+	backButton->loadtexture("back button", 0, 0);
 	buttons.push_back(backButton);
 
 	return true;
@@ -57,8 +66,8 @@ void PauseState::HandleClick(int x, int y) {
 	}
 	if (x > backButton->dest.x&& x < backButton->dest.x + backButton->dest.w && y > backButton->dest.y&& y < backButton->dest.y + backButton->dest.h) {
 		backButton->handleClick();
-
-		data->machine.AddState(StateRef(new MapState(data)));
+		game->playing = false;
+		data->machine.RemoveState();
 		SDL_Delay(100);
 	}
 }
@@ -80,8 +89,9 @@ void PauseState::Update(float dt) {
 void PauseState::Draw() {
 	SDL_RenderClear(this->data->renderer);
 	game->Draw();
-	resumeButton->draw();
-	backButton->draw();
+	for (auto button : buttons) {
+		button->draw();
+	}
 	
 	SDL_RenderPresent(data->renderer);
 }

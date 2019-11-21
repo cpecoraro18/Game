@@ -14,14 +14,14 @@ Game::Game(int width, int height, const char* title) {
 	frameTime = 0;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-		printf("SDL could not initialize SDL_Error: %s\n", SDL_GetError());
+		
+		("SDL could not initialize SDL_Error: %s\n", SDL_GetError());
 		return;
 	}
 	else {
 		printf("SDL Initialized\n");
 		//create window
-		_data->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			width, height, 0);
+		_data->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 		if (_data->window == NULL) {
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			return;
@@ -48,7 +48,7 @@ Game::Game(int width, int height, const char* title) {
 	else {
 		printf("Initialized Audio");
 	}
-	_data->machine.AddState(StateRef(new SplashState(_data)));
+	_data->machine.AddState(StateRef(new GameState(_data, "")));
 	this->Run();
 }
 
@@ -84,7 +84,7 @@ void Game::Run() {
 		static int frameCounter = 0;
 		frameCounter++;
 		if (frameCounter == 60) {
-			printf("FPS: %f\n", fps);
+			//printf("FPS: %f\n", fps);
 			timeCounter = 0;
 			frameCounter = 0;
 		}

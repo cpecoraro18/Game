@@ -27,6 +27,13 @@ Block::Block(GameDataRef data, float x, float y, float h, float w, int nFrames, 
 	destHitbox.h = h;
 
 }
+Block::~Block() { 
+	
+	//printf("Deleting Block\n"); 
+	delete hitbox;
+
+}
+
 
 
 void Block::draw() {

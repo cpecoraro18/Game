@@ -11,14 +11,17 @@ Knight::Knight(int x, int y, int h, int w, int nFrames, int frameSpeed, GameData
 	src.w = 64;
 	hitbox = new AABB(x, y, w, h);
 	texture = data->texmanager.GetTexture("knight");
-	hitboxTexture = data->texmanager.GetTexture("hitbox");
-
 	destHitbox.x = x - data->camera.x;
 	destHitbox.y = y - data->camera.y;
 	destHitbox.w = w;
 	destHitbox.h = h;
 	goLeft();
 
+}
+
+Knight::~Knight() { 
+	//printf("Deleting Knight\n");
+	delete hitbox;
 }
 
 
@@ -96,7 +99,7 @@ void Knight::handleCollisions() {
 	
 }
 
-void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt) {
+void Knight::handleCollisions(std::vector<class Entity*> collidables, int onx, float dt) {
 	for (auto&& ent : collidables) {
 
 		if (ent != this && !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {

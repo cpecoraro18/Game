@@ -7,10 +7,10 @@
 class Button  {
 public:
 
-	Button(GameDataRef data, float x, float y, float w, float h);
-	Button(GameDataRef data, float x, float y, float w, float h, int nFrames, int frameSpeed);
-	~Button() {}
-	void loadtexture(const char* path, const char* name, int tilex, int tiley);
+	Button(GameDataRef data, float x, float y, int srcw, int srch, float w, float h);
+	Button(GameDataRef data, float x, float y, int srcw, int srch, float w, float h, int nFrames, int frameSpeed);
+	~Button() { /*printf("Deleting Button\n");*/ }
+
 	void loadtexture(const char* name, int tilex, int tiley);
 	void update();
 	void draw();

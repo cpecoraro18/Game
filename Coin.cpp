@@ -3,7 +3,7 @@
 
 Coin::Coin(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed) : Entity(x, y, h, w, nFrames, frameSpeed, data) {
 	type_ = kCoin;
-	coinSound = Mix_LoadWAV("Images/CoinSound.wav");
+	coinSound = data->audioManager.GetChunk("coinSound");
 	dead = false;
 	hitbox = new AABB(x+5, y+5, w, h);
 
@@ -11,6 +11,11 @@ Coin::Coin(GameDataRef data, float x, float y, float h, float w, int nFrames, in
 	src.y = 0;
 	src.h = 32;
 	src.w = 32;
+}
+
+Coin::~Coin() {
+//	printf("Deleting Coin\n");
+	delete hitbox;
 }
 
 

@@ -2,6 +2,7 @@
 #include "GameState.h"
 #include "Button.h"
 #include "PauseState.h"
+#include "MapState.h"
 #include <fstream>
 
 
@@ -11,20 +12,44 @@ GameState::GameState(GameDataRef data, const char* Level) : data(data){
 }
 
 GameState::~GameState() {
+	printf("Deleting game state");
+	delete map;
+	delete player;
+	for (auto enemy : enemies) {
+		delete enemy;
+	}
+	delete pauseButton;
+	data->texmanager.DestroyTextures();
+	data->audioManager.DestroyChunks();
+	data->audioManager.DestroyMusic();
+
 }
 
 
 bool GameState::Init() {
-
-	Mix_Music* backgroundMusic = Mix_LoadMUS("Images/Song2.mp3");
-	
-	printf("Loading Game textures...\n");
+	printf("Loading Game assets...\n");
+	//background music
+	data->audioManager.LoadMusic("Images/Song2.mp3", "backgroundLevel1");
+	//sounds
+	data->audioManager.LoadChunk("Images/CoinSound.wav", "coinSound");
+	data->audioManager.LoadChunk("Images/Jump.wav", "jumpSound");
+	data->audioManager.LoadChunk("Images/BowSound.wav", "bowSound");
+	//game textures
 	data->texmanager.LoadTexture("Images/water.bmp", "hitbox", data->renderer);
 	data->texmanager.LoadTexture("Images/Arrow.png", "arrow", data->renderer);
 	data->texmanager.LoadTexture("Images/armandbow.png", "armandbow", data->renderer);
 	data->texmanager.LoadTexture("Images/Bird.png", "bird", data->renderer);
 	data->texmanager.LoadTexture("Images/Knight.png", "knight", data->renderer);
 	data->texmanager.LoadTexture("Images/Numbers.png", "numbers", data->renderer);
+	data->texmanager.LoadTexture("Images/craigwithbow.png", "player", data->renderer);
+	data->texmanager.LoadTexture("Images/Coin.png", "coin", data->renderer);
+	data->texmanager.LoadTexture("Images/key.png", "key", data->renderer);
+	data->texmanager.LoadTexture("Images/PauseButton.png", "pause button", data->renderer);
+	//pause textures
+	data->texmanager.LoadTexture("Images/ResumeButton.png", "resume button", data->renderer);
+	data->texmanager.LoadTexture("Images/BackButton.png", "back button", data->renderer);
+	
+
 	printf("Textures loaded\n");
 
 	//initialize map
@@ -32,6 +57,7 @@ bool GameState::Init() {
 
 	//load level
 	printf("Loading level...\n");
+
 	map->LoadCollidables("Images/collidables.txt");
 	map->LoadBackground("Images/background.txt");
 	map->LoadCoins("Images/others.txt");
@@ -39,7 +65,7 @@ bool GameState::Init() {
 	//initialize entities
 	//initialize player
 	player = new Player(50, 200, 75, 75, 3, 100, data);
-	player->loadtexture("Images/craigwithbow.png", "player", 0, 0);
+	player->loadtexture("player", 0, 0);
 	player->loadHitboxTexture("hitbox", 0, 0);
 	//initialize birds
 	for (int i = 0; i < 20; i++) {
@@ -51,11 +77,14 @@ bool GameState::Init() {
 	knight = new Knight(4700, 800, 150, 150, 2, 100, data);
 	enemies.push_back(knight);
 
+	pauseButton = new Button(data, SCREEN_WIDTH - 100, SCREEN_HEIGHT*.05, 32, 32, 50, 50);
+	pauseButton->loadtexture("pause button", 0, 0);
 	
+	backgroundMusic = data->audioManager.GetMusic("backgroundLevel1");
 	printf("Level loaded\n");
+
 	Mix_PlayMusic(backgroundMusic, -1);
-	pauseButton = new Button(data, SCREEN_WIDTH - 100, 25, 50, 50);
-	pauseButton->loadtexture("Images/PauseButton.png", "pause button", 0, 0);
+	playing = true;
 	return true;
 }
 
@@ -152,4 +181,12 @@ void GameState::HandleClick(int x, int y) {
 
 void GameState::clean() {
 	
+}
+
+void GameState::Resume() {
+	if (!playing) {
+		data->machine.RemoveState();
+		data->machine.AddState(StateRef(new MapState(data)));
+	}
+	pauseButton->src.x = 0;
 }

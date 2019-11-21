@@ -14,7 +14,8 @@ public:
 
 	Map() {}
 	Map(GameDataRef data);
-	~Map() {}
+
+	~Map();
 
 	void LoadCollidables(char* path);
 

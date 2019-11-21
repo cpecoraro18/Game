@@ -1,21 +1,28 @@
 #include "CoinCounter.h"
 #include "TextureManager.h"
 
+
 CoinCounter::CoinCounter(GameDataRef data) : data(data) {
 
 	texture = data->texmanager.GetTexture("numbers");
 	coinTexture = data->texmanager.GetTexture("coin");
 	srcOnes.x = srcOnes.y = srcTens.x = srcTens.y =  srcHundreds.x = srcHundreds.y = srcCoin.x = srcCoin.y = 0;
-	srcOnes.w = srcOnes.h = srcTens.w = srcTens.h = srcHundreds.w = srcHundreds.h = srcCoin.w = srcCoin.h = 32;
-	destOnes.y = destTens.y = destHundreds.y = destCoin.y= 50;
-	destOnes.x = 150;
-	destTens.x = 100;
-	destHundreds.x = 50;
+	srcOnes.w =  srcTens.w =  srcHundreds.w =  NUMBER_SPRITE_WIDTH;
+	srcOnes.h = srcTens.h = srcHundreds.h =  NUMBER_SPRITE_HEIGHT;
+	srcCoin.h = COIN_SPRITE_HEIGHT;
+	srcCoin.w = COIN_SPRITE_WIDTH;
+	destOnes.y = destTens.y = destHundreds.y = destCoin.y= SCREEN_HEIGHT*.1;
+	destOnes.x = SCREEN_WIDTH*.15;
+	destTens.x = SCREEN_WIDTH*.1;
+	destHundreds.x = SCREEN_WIDTH*.05;
 	destCoin.x = 0;
-	destOnes.w = destOnes.h = destTens.w = destTens.h = destHundreds.w = destHundreds.h = destCoin.w = destCoin.h = 50;
-	
+	destOnes.w =  destTens.w =  destHundreds.w =  destCoin.w =  NUMBER_WIDTH;
+	destOnes.h = destTens.h = destHundreds.h = destCoin.h = NUMBER_HEIGHT;
 	numCoins = 0;
 
+}
+
+CoinCounter::~CoinCounter() {
 }
 
 void CoinCounter::Notify(int numCoins) {
@@ -27,13 +34,13 @@ void CoinCounter::Display() {
 	int numCoinsLeft = numCoins;
 	
 	temp = numCoinsLeft % 10;
-	srcOnes.x = temp  * 32;
+	srcOnes.x = temp  * NUMBER_SPRITE_WIDTH;
 	numCoinsLeft /= 10;
 	temp = numCoinsLeft % 10;
-	srcTens.x = temp * 32;
+	srcTens.x = temp * NUMBER_SPRITE_WIDTH;
 	numCoinsLeft /= 10;
 	temp = numCoinsLeft % 10;
-	srcHundreds.x = temp * 32;
+	srcHundreds.x = temp * NUMBER_SPRITE_WIDTH;
 	numCoinsLeft /= 10;
 	data->texmanager.Draw(coinTexture, srcCoin, destCoin, data->renderer);
 	data->texmanager.Draw(texture, srcOnes, destOnes, data->renderer);

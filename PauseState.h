@@ -12,7 +12,9 @@
 class PauseState : public State {
 public:
 	PauseState(GameDataRef data, GameState* game);
+	~PauseState();
 
+	void Identify() { printf("Pause State"); }
 	bool Init();
 
 	void HandleInput();
@@ -23,7 +25,6 @@ public:
 private:
 	GameDataRef data;
 	GameState* game;
-	SDL_Texture* _background;
 	SDL_Rect src, dest;
 	Button* resumeButton;
 	Button* backButton;

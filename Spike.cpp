@@ -26,6 +26,11 @@ Spike::Spike(GameDataRef data, float x, float y, float h, float w, bool flipped)
 	}
 }
 
+
+Spike::~Spike() { 
+	//printf("Deleting Spike\n"); 
+	delete hitbox;
+}
 void Spike::update(std::vector<class Entity*> collidables, float dt) {
 	Entity::update(collidables, dt);
 	hitbox->setDimentions(position->x+20, position->y+40);

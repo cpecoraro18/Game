@@ -9,6 +9,13 @@ SplashState::SplashState(GameDataRef data) : data(data){
 
 }
 
+SplashState::~SplashState() {
+	printf("Deleting splash state");
+	data->texmanager.DestroyTextures();
+	data->audioManager.DestroyChunks();
+	data->audioManager.DestroyMusic();
+}
+
 bool SplashState::Init() {
 	data->texmanager.LoadTexture("Images/SplashScreen.png", "splash background", data->renderer);
 	_background = data->texmanager.GetTexture("splash background");

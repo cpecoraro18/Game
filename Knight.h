@@ -12,7 +12,9 @@ public:
 
 	Knight(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
 
-	Knight() {}
+	Knight();
+
+	~Knight(); 
 
 	void update(std::vector<class Entity*> collidables, float dt, Player* player);
 
@@ -20,7 +22,7 @@ public:
 
 	void handleCollisions();
 
-	void handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*> collidables, int onx, float dt);
 
 	void Animate(Player* player);
 

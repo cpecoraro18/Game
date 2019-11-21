@@ -6,11 +6,22 @@
 #include "DEFINITIONS.h"
 
 MapState::MapState(GameDataRef data) : data(data) {
-
 }
 
+MapState::~MapState() {
+	printf("Deleting map state");
+	for (auto level : levels) {
+		delete level;
+	}
+	delete backButton;
+	data->texmanager.DestroyTextures();
+	data->audioManager.DestroyChunks();
+	data->audioManager.DestroyMusic();
+}
 bool MapState::Init() {
+	data->texmanager.LoadTexture("Images/Location.png", "location", data->renderer);
 	data->texmanager.LoadTexture("Images/Map2.png", "map", data->renderer);
+	data->texmanager.LoadTexture("Images/BackButton.png", "back button", data->renderer);
 	map = data->texmanager.GetTexture("map");
 	src.x = 0;
 	src.y = 0;
@@ -21,12 +32,12 @@ bool MapState::Init() {
 	dest.h = SCREEN_HEIGHT;
 	dest.w = SCREEN_WIDTH;
 
-	Button* level1Button = new Button(data, 120, 175, 16, 16);
-	level1Button->loadtexture("Images/Location.png", "location", 0, 0);
+	Button* level1Button = new Button(data, SCREEN_WIDTH/6, SCREEN_HEIGHT/2, 32, 32, 32, 32);
+	level1Button->loadtexture( "location", 0, 0);
 	levels.push_back(level1Button);
 
-	backButton = new Button(data, 50, 50, 50, 50);
-	backButton->loadtexture("Images/BackButton.png", "back button", 0, 0);
+	backButton = new Button(data, 50, 50, 64, 32, 100, 50);
+	backButton->loadtexture("back button", 0, 0);
 	return true;
 }
 
@@ -50,7 +61,6 @@ void MapState::HandleInput() {
 			{
 
 			case SDLK_RETURN:
-				data->machine.AddState(StateRef(new MapState(data)));
 				break;
 			}
 		}

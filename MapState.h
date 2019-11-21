@@ -11,9 +11,10 @@
 class MapState : public State {
 public:
 	MapState(GameDataRef data);
+	~MapState();
 
+	void Identify() { printf("Map State"); }
 	bool Init();
-
 	void HandleInput();
 	void Update(float dt);
 	void Draw();

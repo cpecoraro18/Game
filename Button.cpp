@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(GameDataRef data, float x, float y, float w, float h):data(data) {
+Button::Button(GameDataRef data, float x, float y, int srcw, int srch, float w, float h):data(data) {
 	hovering = false;
 	width = w;
 	height = h;
@@ -11,11 +11,11 @@ Button::Button(GameDataRef data, float x, float y, float w, float h):data(data) 
 	dest.y = y;
 	dest.w = w;
 	dest.h = h;
-	src.h = 32;
-	src.w = 32;
+	src.h = srch;
+	src.w = srcw;
 
 }
-Button::Button(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed): data(data) {
+Button::Button(GameDataRef data, float x, float y, int srcw, int srch, float h, float w, int nFrames, int frameSpeed): data(data) {
 	hovering = false;
 	width = w;
 	height = h;
@@ -24,18 +24,12 @@ Button::Button(GameDataRef data, float x, float y, float h, float w, int nFrames
 	dest.y = y;
 	dest.w = w;
 	dest.h = h;
-	src.h = 32;
-	src.w = 32;
+	src.h = srch;
+	src.w = srcw;
 
 	animated = true;
 	frames = nFrames;
 	speed = frameSpeed;
-}
-void Button::loadtexture(const char* path, const char* name, int tilex, int tiley) {
-	data->texmanager.LoadTexture(path, name, data->renderer);
-	this->texture = data->texmanager.GetTexture(name);
-	src.x = tilex;
-	src.y = tiley;
 }
 void Button::loadtexture(const char* name, int tilex, int tiley) {
 	this->texture = data->texmanager.GetTexture(name);
@@ -60,7 +54,8 @@ void Button::draw() {
 	data->texmanager.Draw(texture, src, dest, data->renderer);
 }
 void Button::handleClick() {
-	src.x = 32;
+	src.x = src.w;
 
 }
+
 

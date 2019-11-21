@@ -42,21 +42,12 @@ Arrow::Arrow(GameDataRef data, float x, float y, float h, float w, float speedx,
 	loadtexture("arrow", 0, 0);
 }
 
+Arrow::~Arrow() {
+	//printf("Deleting Arrow\n");
+	delete position;
+	delete velocity;
+	delete hitbox;
 
-void Arrow::loadtexture(const char* path, const char* name, int tilex, int tiley) {
-	data->texmanager.LoadTexture(path, name, data->renderer);
-	this->texture = data->texmanager.GetTexture(name);
-	src.x = tilex;
-	src.y = tiley;
-}
-void Arrow::loadtexture(const char* name, int tilex, int tiley) {
-	this->texture = data->texmanager.GetTexture(name);
-	src.x = tilex;
-	src.y = tiley;
-}
-
-void Arrow::loadHitboxTexture(const char* name, int tilex, int tiley) {
-	this->hitboxTexture = data->texmanager.GetTexture(name);
 }
 
 
@@ -99,7 +90,7 @@ void Arrow::update(std::vector<class Entity*> collidables, std::vector<class Ent
 	return;
 }
 
-void Arrow::handleCollisions(std::vector<class Entity*> &collidables) {
+void Arrow::handleCollisions(std::vector<class Entity*> collidables) {
 	double theta;
 	for (auto&& ent : collidables) {
 
@@ -179,4 +170,15 @@ int Arrow::getNumCoinsHit() {
 	int coins = numCoinsHit;
 	numCoinsHit = 0;
 	return coins;
+}
+
+void Arrow::loadtexture(const char* name, int tilex, int tiley) {
+	texture = data->texmanager.GetTexture(name);
+	src.x = tilex;
+	src.y = tiley;
+
+}
+void Arrow::loadHitboxTexture(const char* name, int tilex, int tiley) {
+
+	hitboxTexture = data->texmanager.GetTexture(name);
 }

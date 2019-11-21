@@ -10,21 +10,15 @@ public:
 
 	Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
 
-	~Bird() {}
+	~Bird();
 
 	void update(std::vector<class Entity*> collidables, float dt) override;
-
 	void draw();
-
 	void handleCollisions();
-
 	void Animate();
 
 	void goRight();
-
 	void goLeft();
-
-
 	void die();
 
 	Vector getPosition() { return *position; }
@@ -42,13 +36,5 @@ public:
 	bool mAtCeiling;
 
 private:
-
-
-
-
-
-	Mix_Chunk* birdSound;
-
-
 };
 #endif /*SRC_BIRD_H_ */

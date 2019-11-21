@@ -7,9 +7,22 @@ MenuState::MenuState(GameDataRef data) : data(data){
 
 }
 
+MenuState::~MenuState() {
+	printf("Deleting menu state");
+	for (auto button : buttons) {
+		delete button;
+	}
+	data->texmanager.DestroyTextures();
+	data->audioManager.DestroyChunks();
+	data->audioManager.DestroyMusic();
+
+}
+
 bool MenuState::Init() {
 	printf("Loading Menu textures...\n");
 	data->texmanager.LoadTexture("Images/MenuBackground.png", "menu background", data->renderer);
+	data->texmanager.LoadTexture("Images/PlayButton.png", "play button", data->renderer);
+	data->texmanager.LoadTexture("Images/Quit.png", "quit button", data->renderer);
 	printf("Textures loaded\n");
 	_background = data->texmanager.GetTexture("menu background");
 	src.x = 0;
@@ -20,9 +33,14 @@ bool MenuState::Init() {
 	dest.y = 0;
 	dest.h = SCREEN_HEIGHT;
 	dest.w = SCREEN_WIDTH;
-	Button* startButton = new Button(data, 350, 250, 200, 200);
-	startButton->loadtexture("Images/PlayButton.png", "play button", 0, 0);
+	startButton = new Button(data, SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/2-BUTTON_HEIGHT/2, 
+		BUTTON_SPRITE_WIDTH, BUTTON_SPRITE_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
+	startButton->loadtexture( "play button", 0, 0);
 	buttons.push_back(startButton);
+	quitButton = new Button(data, SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2, 2*SCREEN_HEIGHT / 3- BUTTON_HEIGHT / 2,
+		BUTTON_SPRITE_WIDTH, BUTTON_SPRITE_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
+	quitButton->loadtexture("quit button", 0, 0);
+	buttons.push_back(quitButton);
 
 	return true;
 }
@@ -57,13 +75,17 @@ void MenuState::HandleInput() {
 }
 
 void MenuState::HandleClick(int x, int y) {
-	for (auto button : buttons) {
-		if (x > button->dest.x && x < button->dest.x + button->dest.w && y > button->dest.y && y < button->dest.y + button->dest.h) {
-			button->handleClick();
+	if (x > startButton->dest.x && x < startButton->dest.x + startButton->dest.w && y > startButton->dest.y && y < startButton->dest.y + startButton->dest.h) {
+		startButton->handleClick();
 			
-			data->machine.AddState(StateRef(new MapState(data)));
-			SDL_Delay(100);
-		}
+		data->machine.AddState(StateRef(new MapState(data)));
+		SDL_Delay(100);
+	}
+	if (x > quitButton->dest.x&& x < quitButton->dest.x + quitButton->dest.w && y > quitButton->dest.y&& y < quitButton->dest.y + quitButton->dest.h) {
+		quitButton->handleClick();
+
+		Game::running = false;
+		SDL_Delay(100);
 	}
 }
 void MenuState::Update(float dt) {

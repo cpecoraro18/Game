@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Bow.cpp" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Bird.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Bow.h" />

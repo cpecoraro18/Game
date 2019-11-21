@@ -15,6 +15,14 @@ Map::Map(GameDataRef data): data(data) {
 
 }
 
+Map::~Map() {
+	printf("Deleting Map\n");
+	for (auto block : collidables) {
+		delete block;
+	}
+
+}
+
 void Map::LoadCollidables(char* path) {
 	data->texmanager.LoadTexture("Images/level1tileset.png", "tileset", data->renderer);
 	std::ifstream inFile;
@@ -78,8 +86,6 @@ void Map::LoadCoins(char* path) {
 	inFile >> mapWidth;
 	inFile >> mapHeight;
 
-
-
 	int type = 0;
 	int layer;
 	for (int row = 0; row < mapHeight; row++) {
@@ -92,7 +98,7 @@ void Map::LoadCoins(char* path) {
 				break;
 			case 16:
 				ent = new Coin(data, col * 55, row * 55, 35, 35, 5, 100);
-				ent->loadtexture("Images/Coin.png","coin", 0, 0);
+				ent->loadtexture("coin", 0, 0);
 				collidables.push_back(ent);
 				break;
 			case 17:
@@ -107,13 +113,12 @@ void Map::LoadCoins(char* path) {
 				break;
 			case 20:
 				ent = new Key(data, col * 55, row * 55, 55, 55, 4, 100);
-				ent->loadtexture("Images/key.png", "key", 0, 0);
+				ent->loadtexture("key", 0, 0);
 				collidables.push_back(ent);
 				break;
 			case 21:
 				ent = new Block(data, col * 55, row * 55, 55, 55);
 				ent->loadtexture("tileset", type % 8 * 32, layer * 32);
-				ent->loadHitboxTexture("hitbox", 0, 0);
 				collidables.push_back(ent);
 				break;
 			default:
@@ -141,7 +146,6 @@ void Map::DrawMap() {
 	for (auto&& block : collidables) {
 		if (block->position->x >= data->camera.x - buffer && block->position->x + block->width <= data->camera.x + data->camera.w + buffer &&
 			block->position->y >= data->camera.y - buffer && block->position->y + block->height <= data->camera.y + data->camera.h + buffer) {
-			
 			block->draw();
 			
 			

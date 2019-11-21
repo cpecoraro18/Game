@@ -8,10 +8,12 @@
 #include "SDL_mixer.h"
 #include "StateMachine.h"
 #include "TextureManager.h"
+#include "AudioManager.h"
 
 struct GameData {
 	StateMachine machine;
 	TextureManager texmanager;
+	AudioManager audioManager;
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 	SDL_Surface *surface;
@@ -24,10 +26,11 @@ class Game {
 
 public:
 	Game(int width, int height, const char* title);
-
+	~Game() { printf("Deleting Game\n"); }
+	
 	void Run();
-
 	void CalculateFPS();
+
 	static bool running;
 	
 private:

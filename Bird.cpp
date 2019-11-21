@@ -19,6 +19,11 @@ Bird::Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef 
 	hitboxTexture = data->texmanager.GetTexture("hitbox");
 }
 
+Bird::~Bird() { 
+	//printf("Deleting Bird\n"); 
+	delete hitbox;
+}
+
 void Bird::update(std::vector<class Entity*> collidables, float dt) {
 	Entity::update(collidables, dt);
 	position->x += velocity->x;

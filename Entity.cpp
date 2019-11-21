@@ -30,6 +30,16 @@ Entity::Entity(int x, int y, int h, int w, int nFrames, int frameSpeed, GameData
 }
 
 
+Entity::~Entity() {
+
+	//printf("Destroying Entity\n");
+
+	delete position;
+	delete velocity;
+	delete acceleration;
+
+}
+
 void Entity::update(std::vector<class Entity*> collidables, float dt) {
 	//apply accelerations
 	velocity->x += gravity->x;
@@ -42,15 +52,8 @@ void Entity::update(std::vector<class Entity*> collidables, float dt) {
 }
 
 void Entity::loadHitboxTexture(const char* name, int tilex, int tiley) {
-	this->hitboxTexture = data->texmanager.GetTexture(name);
+	hitboxTexture = data->texmanager.GetTexture(name);
 	
-}
-
-void Entity::loadtexture(const char* path, const char* name, int tilex, int tiley) {
-	data->texmanager.LoadTexture(path, name, data->renderer);
-	texture = data->texmanager.GetTexture(name);
-	src.x = tilex;
-	src.y = tiley;
 }
 
 void Entity::loadtexture(const char* name, int tilex, int tiley) {

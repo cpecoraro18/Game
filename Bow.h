@@ -10,6 +10,7 @@ public:
 
 	Bow(GameDataRef data, float x, float y, float h, float w);
 	~Bow() {}
+
 	void loadtexture(const char* path, const char* name, int tilex, int tiley);
 	void loadtexture(const char* name, int tilex, int tiley);
 	void update(float dt, int x, int y);

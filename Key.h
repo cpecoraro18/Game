@@ -9,7 +9,7 @@ class Key : public Entity {
 public:
 
 	Key(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
-	~Key() {}
+	~Key();
 	void update(std::vector<class Entity*> collidables, float dt) override;
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 	void handleCollisions();

@@ -12,6 +12,11 @@ Key::Key(GameDataRef data, float x, float y, float h, float w, int nFrames, int 
 	src.w = 32;
 }
 
+Key::~Key(){ 
+	//printf("Deleting Key\n"); 
+	delete hitbox;
+}
+
 
 void Key::update(std::vector<class Entity*> collidables, float dt) {
 	Entity::update(collidables, dt);

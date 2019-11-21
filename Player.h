@@ -17,7 +17,7 @@ public:
 
 	Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
 
-	~Player() {}
+	~Player();
 
 	void update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt);
 
@@ -25,7 +25,7 @@ public:
 
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 
-	void handleCollisions(std::vector<class Entity*> &collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*> collidables, int onx, float dt);
 
 	void Animate();
 
@@ -60,6 +60,7 @@ private:
 	
 
 	int count;
+	int deathCount;
 	int coinCount;
 	int keyCount;
 
@@ -73,14 +74,13 @@ private:
 	bool shootingLeft;
 	bool shootingRight;
 	double angle;
-	std::vector<class Arrow*> arrows;
+	std::vector<std::unique_ptr<class Arrow>> arrows;
 
 	int mouseX, mouseY;
 	SDL_Rect srcarm, destarm;
 	SDL_Texture* armtexture;
 
 	Mix_Chunk* jumpSound;
-	Mix_Chunk* coinSound;
 	Mix_Chunk* bowSound;
 
 	CoinCounter* coinCounter;

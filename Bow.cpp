@@ -16,7 +16,7 @@ Bow::Bow(GameDataRef data, float x, float y, float h, float w) : data(data) {
 	frames = 1;
 	speed = 100;
 
-	loadtexture("Images/Bow.png", "bow", 0, 0);
+	loadtexture("bow", 0, 0);
 }
 
 
