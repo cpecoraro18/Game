@@ -1,6 +1,6 @@
 #include "Bird.h"
 
-Bird::Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data) : Entity(x, y, h, w, nFrames, frameSpeed, data) {
+Bird::Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data) : Enemy(x, y, h, w, nFrames, frameSpeed, data) {
 	type_ = kBird;
 	dead = false;
 	hitbox = new AABB(x, y, w, h);
@@ -17,6 +17,9 @@ Bird::Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef 
 
 	texture = data->texmanager.GetTexture("bird");
 	hitboxTexture = data->texmanager.GetTexture("hitbox");
+
+	frames = nFrames;
+	speed = frameSpeed;
 }
 
 Bird::~Bird() { 
@@ -24,7 +27,7 @@ Bird::~Bird() {
 	delete hitbox;
 }
 
-void Bird::update(std::vector<class Entity*> collidables, float dt) {
+void Bird::update(std::vector<class Entity*>& collidables, float dt, Player* player) {
 	Entity::update(collidables, dt);
 	position->x += velocity->x;
 	hitbox->setDimentions(position->x, position->y);

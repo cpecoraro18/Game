@@ -2,23 +2,24 @@
 #include "SDL.h"
 #include "TextureManager.h"
 #include "Map.h"
+#include "MapState.h"
 #include <algorithm>
 
 #include <cmath>
 
 
-Vector* maxSpeed = new Vector(5, 15);
+Vector* maxSpeed = new Vector(10, 30);
 
 Player::Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data) : Entity(x, y, h, w, nFrames, frameSpeed, data) {
 
 	type_ = kPlayer;
 
-	hitboxXBuffer = w*.25;
-	hitboxYBuffer = h*.25;
+	hitboxXBuffer = w * .25;
+	hitboxYBuffer = h * .25;
 	hitboxWidthBuffer = w * .66 * -1;
-	hitboxHeightBuffer = h*.33 * -1;
-
+	hitboxHeightBuffer = h * .33 * -1;
 	hitbox = new AABB(x + hitboxWidthBuffer, y + hitboxYBuffer, w + hitboxWidthBuffer, h + hitboxHeightBuffer);
+	
 	src.x = 0;
 	src.y = 0;
 	src.w = 32;
@@ -28,6 +29,9 @@ Player::Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameData
 	destHitbox.y = y + hitboxYBuffer - data->camera.y;
 	destHitbox.w = w + hitboxWidthBuffer;
 	destHitbox.h = h + hitboxHeightBuffer;
+
+	spawnPoint = new Vector(x, y);
+
 	
 	mOnGround = false;
 	groundFriction = false;
@@ -45,16 +49,12 @@ Player::Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameData
 	srcarm.y = 0;
 	srcarm.h = 32;
 	srcarm.w = 32;
-	destarm.x = x +7 - data->camera.x;
+	destarm.x = x + 7 - data->camera.x;
 	destarm.y = y + 10 - data->camera.y;
 	destarm.h = h;
 	destarm.w = w;
-
-	
 	jumpSound = data->audioManager.GetChunk("jumpSound");
-	
 	bowSound = data->audioManager.GetChunk("bowSound");
-
 
 	coinCounter = new CoinCounter(data);
 
@@ -66,14 +66,19 @@ Player::Player(int x, int y, int h, int w, int nFrames, int frameSpeed, GameData
 
 Player::~Player() {
 	//printf("Destroying player\n");
-	delete hitbox;
 	delete coinCounter;
+	delete spawnPoint;
 
 }
 
 
 
-void Player::update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt) {
+void Player::update(std::vector<class Entity*>& collidables, float dt) {
+	if (!playing) {
+		data->machine.AddState(StateRef(new MapState(data)));
+	}
+
+
 	if (dead) {
 		if (deathCount == 0) {
 			velocity->y = -20.0f;
@@ -81,10 +86,12 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 		}
 		deathCount++;
 		if (deathCount > 120) {
-			position->x = 50;
-			position->y = 200;
+			position->x = spawnPoint->x;
+			position->y = spawnPoint->y;
 			velocity->x = 0;
 			velocity->y = 0;
+			acceleration->x = 0;
+			acceleration->y = 0;
 			src.x = 0;
 			src.y = 0;
 			dead = false;
@@ -93,7 +100,6 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 		}
 		count++;
 		Entity::update(collidables, dt);
-
 		//cap max speed
 		if (velocity->x > maxSpeed->x) {
 			velocity->x = maxSpeed->x;
@@ -108,9 +114,7 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 		else if (fabs(velocity->y) > maxSpeed->y) {
 			velocity->y = -1 * maxSpeed->y;
 		}
-		if (animated) {
-			Animate();
-		}
+		Animate();
 		position->y += velocity->y;
 		hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
 		return;
@@ -119,7 +123,6 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 	
 	count++;
 	Entity::update(collidables, dt);
-
 	//cap max speed
 	if (velocity->x > maxSpeed->x) {
 		velocity->x = maxSpeed->x;
@@ -142,23 +145,19 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 
 	}
 	if (hitbox->bottom - data->camera.y > data->camera.h ) {
-		printf("%f > %d\n", hitbox->bottom - data->camera.y, data->camera.h);
 		die();
 	}
 
 	//animate
-	if (animated) {
-		Animate();
-	}
+	Animate();
+
 
 
 
 	//change x position
-	oldPosition = position;
 	position->x += velocity->x;
-	hitbox->setDimentions(position->x+ hitboxXBuffer, position->y+hitboxYBuffer);
+	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
 	handleCollisions(collidables, 1, dt);
-	handleCollisions(enemies, 1, dt);
 
 	//handle friction
 	if (groundFriction) {
@@ -171,11 +170,10 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
 	handleCollisions(collidables, 0, dt);
-	handleCollisions(enemies, 1, dt);
 	
 	//update arrows
 	for (int i = 0; i < arrows.size(); i++) {
-		arrows[i]->update(collidables, enemies, dt);
+		arrows[i]->update(collidables, dt);
 		coinCount += arrows[i]->getNumCoinsHit();
 			
 		if (arrows[i]->dead) {
@@ -189,68 +187,74 @@ void Player::update(std::vector<class Entity*> collidables, std::vector<class En
 	
 }
 
-void Player::handleCollisions(std::vector<class Entity*> collidables, int onx, float dt) {
+void Player::handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt) {
+	int buffer = 100;
 	for (auto&& ent : collidables) {
+		//check if on screen
+		if (ent->position->x >= data->camera.x - buffer && ent->position->x + ent->width <= data->camera.x + data->camera.w + buffer &&
+			ent->position->y >= data->camera.y - buffer && ent->position->y + ent->height <= data->camera.y + data->camera.h + buffer) {
+			if (ent != this && !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {
+				switch (ent->type_) {
+				case(kBlock):
+					if (velocity->x > 0 && onx == 1) {
+						// collision occurred on the right
+						position->x -= velocity->x;
+						velocity->x = velocity->x * -.4;
+						//printf("Right");
+						return;
+					}
+					if (velocity->x < 0 && onx == 1) {
+						// collision occurred on the left
+						position->x -= velocity->x;
+						velocity->x = velocity->x * -.4;
+						//printf("Left");
+						return;
+					}
+					if (velocity->y > 0 && onx == 0) {
+						// collision occurred on the bottom
+						position->y -= velocity->y;
+						velocity->y = 0;
+						mOnGround = true;
+						jumpCount = 0;
+						//printf("Bottom");
+						return;
 
-		if (ent != this && !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {
-			switch (ent->type_) {
-			case(kBlock):
-				if (velocity->x > 0 && onx == 1) {
-					// collision occurred on the right
-					position->x -= velocity->x;
-					velocity->x = velocity->x*-.4;
-					//printf("Right");
-					return;
+					}
+					else {
+						mOnGround = false;
+					}
+					if (velocity->y < 0 && onx == 0) {
+						// collision occurred on the top
+						position->y -= velocity->y;
+						velocity->y = 0;
+						//printf("Top");
+						return;
+					}
+					break;
+				case(kCoin):
+					coinCount++;
+					//printf("Coint count: %d\n", coinCount);
+					ent->handleCollisions();
+					ent->dead = true;
+					break;
+				case(kKey):
+					keyCount++;
+					//printf("Coint count: %d\n", coinCount);
+					ent->handleCollisions();
+					break;
+				case(kSpike):
+					die();
+					break;
+				case(kEndLevel):
+					playing = false;
+					
 				}
-				if (velocity->x < 0 && onx == 1) {
-					// collision occurred on the left
-					position->x -= velocity->x;
-					velocity->x = velocity->x* -.4;
-					//printf("Left");
-					return;
-				}
-				if (velocity->y > 0 && onx == 0) {
-					// collision occurred on the bottom
-					position->y -= velocity->y;
-					velocity->y = 0;
-					mOnGround = true;
-					jumpCount = 0;
-					//printf("Bottom");
-					return;
 
-				}
-				else {
-					mOnGround = false;
-				}
-				if (velocity->y < 0 && onx == 0) {
-					// collision occurred on the top
-					position->y -= velocity->y;
-					velocity->y = 0;
-					//printf("Top");
-					return;
-				}
-				break;
-			case(kCoin):
-				coinCount++;
-				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollisions();
-				ent->dead = true;
-				break;
-			case(kKey):
-				keyCount++;
-				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollisions();
-				break;
-			case(kSpike):
-				die();
-				break;
-			case(kKnight):
-				die();
-				break;
+
 			}
 
-
 		}
+		
 	}
 
 }
@@ -373,14 +377,13 @@ void Player::draw() {
 	}
 	
 	destarm.y = position->y - data->camera.y;
-	destHitbox.x = position->x + hitboxXBuffer - data->camera.x;
-	destHitbox.y = position->y + hitboxYBuffer- data->camera.y;
 
 	data->texmanager.Draw(texture, src, dest, data->renderer);
+	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 	if (shootingRight && shooting) {
 		data->texmanager.Draw(armtexture, srcarm, destarm, data->renderer, angle);
 	} if (shootingLeft && shooting) {
-		data->texmanager.Draw(armtexture, srcarm, destarm, data->renderer, angle - 180);
+		data->texmanager.Draw(armtexture, srcarm, destarm, data->renderer, angle-180);
 	}
 
 	for (auto &arrow : arrows) {
@@ -391,7 +394,9 @@ void Player::draw() {
 }
 
 void Player::handleinput(SDL_Event event, const Uint8 *keystate) {
-
+	if (dead) {
+		return;
+	}
 	SDL_GetMouseState(&mouseX, &mouseY);
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		shooting = true;
@@ -401,7 +406,7 @@ void Player::handleinput(SDL_Event event, const Uint8 *keystate) {
 		double dy = mouseY - (position->y - data->camera.y);
 		double dx = mouseX - (position->x - data->camera.x);
 		double theta = atan2(dy, dx);
-		shoot(cos(theta)*20, sin(theta)*20);
+		shoot(cos(theta)*shootSpeed, sin(theta)*shootSpeed);
 		shooting = false;
 	}
 
@@ -461,16 +466,16 @@ void Player::handleinput(SDL_Event event, const Uint8 *keystate) {
 
 void Player::goRight() {
 	
-	acceleration->x = 1.0f;
+	acceleration->x = moveSpeed;
 }
 
 void Player::goLeft() {
-	acceleration->x = -1.0f;
+	acceleration->x = -1* moveSpeed;
 }
 
 void Player::jump() {
 	jumpSpriteCounter = 0;
-	velocity->y = -15.0f;
+	velocity->y = jumpVelocity;
 	Mix_PlayChannel(-1, jumpSound, 0);
 }
 
@@ -485,7 +490,7 @@ void Player::die() {
 }
 
 void Player::shoot(float speedx, float speedy) {
-	Arrow* arrow = new Arrow(data, position->x + 10, position->y + 10, 55, 55, speedx, speedy);
+	Arrow* arrow = new Arrow(data, position->x + 10, position->y + 10, BLOCK_SIZE, BLOCK_SIZE, speedx, speedy);
 	arrow->loadHitboxTexture("hitbox", 0, 0);
 	arrows.emplace_back(arrow);
 	Mix_PlayChannel(-1, bowSound, 0);

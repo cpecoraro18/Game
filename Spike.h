@@ -13,7 +13,7 @@ public:
 
 	~Spike();
 
-	void update(std::vector<class Entity*>, float dt) override;
+	void update(std::vector<class Entity*>& collidables, float dt) override;
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 	void handleCollisions();
 	void draw();

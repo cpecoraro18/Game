@@ -12,4 +12,3 @@ bool Collision::checkAABB(const AABB& box1, const AABB& box2) {
 
 	return false;
 }
-

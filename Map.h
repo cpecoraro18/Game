@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Game.h"
 #include <vector>
+#include <string>
 
 class Map {
 public:
@@ -17,11 +18,11 @@ public:
 
 	~Map();
 
-	void LoadCollidables(char* path);
+	void LoadCollidables(std::string path);
 
-	void LoadBackground(char* path);
+	void LoadBackground(std::string path, std::string level);
 
-	void LoadCoins(char* path);
+	void LoadCoins(std::string path);
 
 	void UpdateMap(float dt);
 

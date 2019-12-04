@@ -8,9 +8,7 @@
 #include "SDL_mixer.h"
 #include <vector>
 #include "CoinCounter.h"
-
-
-
+#include "State.h"
 
 class Player : public Entity {
 public:
@@ -19,13 +17,13 @@ public:
 
 	~Player();
 
-	void update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt);
+	void update(std::vector<class Entity*>& collidables, float dt);
 
 	void draw();
 
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 
-	void handleCollisions(std::vector<class Entity*> collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt);
 
 	void Animate();
 
@@ -55,6 +53,8 @@ public:
 	bool mWasAtCeiling;
 	bool mAtCeiling;
 
+	Vector* spawnPoint;
+
 private:
 
 	
@@ -77,6 +77,7 @@ private:
 	std::vector<std::unique_ptr<class Arrow>> arrows;
 
 	int mouseX, mouseY;
+
 	SDL_Rect srcarm, destarm;
 	SDL_Texture* armtexture;
 
@@ -85,6 +86,11 @@ private:
 
 	CoinCounter* coinCounter;
 
+	float jumpVelocity = -20.0f;
+	float moveSpeed = 2.0f;
+	float shootSpeed = 40.0f;
+
+	bool playing = true;
 
 };
 

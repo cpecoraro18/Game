@@ -31,7 +31,7 @@ Spike::~Spike() {
 	//printf("Deleting Spike\n"); 
 	delete hitbox;
 }
-void Spike::update(std::vector<class Entity*> collidables, float dt) {
+void Spike::update(std::vector<class Entity*>& collidables, float dt) {
 	Entity::update(collidables, dt);
 	hitbox->setDimentions(position->x+20, position->y+40);
 }
@@ -57,6 +57,6 @@ void Spike::draw() {
 		destHitbox.y = position->y + 40 - data->camera.y;
 	}
 	data->texmanager.Draw(texture, src, dest, data->renderer);
-	data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
+	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 
 }

@@ -15,7 +15,7 @@
 
 
 enum EntityType {
-	kPlayer = 0, kEnemy, kBlock, kCoin, kSpike, kKey, kBird, kKnight, kUndefined
+	kPlayer = 0, kEnemy, kBlock, kCoin, kSpike, kKey, kBird, kKnight, kEndLevel, kUndefined
 };
 
 inline EntityType get_entity_type(const std::string& type) {

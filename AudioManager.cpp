@@ -1,7 +1,8 @@
 #include "AudioManager.h"
 
-void AudioManager::LoadChunk(const char* fileName, const char* name) {
-	Mix_Chunk* chunk = Mix_LoadWAV(fileName);
+void AudioManager::LoadChunk(std::string fileName, const char* name) {
+	const char* charFileName = fileName.c_str();
+	Mix_Chunk* chunk = Mix_LoadWAV(charFileName);
 	if (chunk != NULL) {
 		this->chunks[name] = chunk;
 	}
@@ -23,8 +24,9 @@ void AudioManager::DestroyChunks() {
 
 }
 
-void AudioManager::LoadMusic(const char* fileName, const char* name) {
-	Mix_Music* music = Mix_LoadMUS(fileName);
+void AudioManager::LoadMusic(std::string fileName, const char* name) {
+	const char* charFileName = fileName.c_str();
+	Mix_Music* music = Mix_LoadMUS(charFileName);
 	if (music != NULL) {
 		this->songs[name] = music;
 	}

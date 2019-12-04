@@ -12,10 +12,10 @@ CoinCounter::CoinCounter(GameDataRef data) : data(data) {
 	srcCoin.h = COIN_SPRITE_HEIGHT;
 	srcCoin.w = COIN_SPRITE_WIDTH;
 	destOnes.y = destTens.y = destHundreds.y = destCoin.y= SCREEN_HEIGHT*.1;
-	destOnes.x = SCREEN_WIDTH*.15;
-	destTens.x = SCREEN_WIDTH*.1;
-	destHundreds.x = SCREEN_WIDTH*.05;
-	destCoin.x = 0;
+	destOnes.x = SCREEN_WIDTH*.2;
+	destTens.x = SCREEN_WIDTH*.15;
+	destHundreds.x = SCREEN_WIDTH*.1;
+	destCoin.x = SCREEN_WIDTH*.05;
 	destOnes.w =  destTens.w =  destHundreds.w =  destCoin.w =  NUMBER_WIDTH;
 	destOnes.h = destTens.h = destHundreds.h = destCoin.h = NUMBER_HEIGHT;
 	numCoins = 0;

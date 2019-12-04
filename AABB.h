@@ -5,9 +5,13 @@
 class AABB {
 public:
 	AABB(float x, float y, float width, float height);
+	AABB() {}
 
 	void setDimentions(float x, float y);
 	void setDimentions(float x, float y, float width, float height);
+	AABB Union(AABB a, AABB b);
+	float Area();
+
 
 	float rightside;
 	float leftside;

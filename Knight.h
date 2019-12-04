@@ -4,10 +4,10 @@
 #define SRC_KNIGHT_H_
 
 #include "Vector.h"
-#include "Entity.h"
+#include "Enemy.h"
 #include "Player.h"
 
-class Knight : public Entity {
+class Knight : public Enemy {
 public:
 
 	Knight(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
@@ -16,13 +16,13 @@ public:
 
 	~Knight(); 
 
-	void update(std::vector<class Entity*> collidables, float dt, Player* player);
+	void update(std::vector<class Entity*>& collidables, float dt, Player* player);
 
 	void draw();
 
 	void handleCollisions();
 
-	void handleCollisions(std::vector<class Entity*> collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt);
 
 	void Animate(Player* player);
 

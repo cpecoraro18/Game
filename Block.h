@@ -12,7 +12,7 @@ public:
 	Block(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
 	~Block();
 
-	void update(std::vector<class Entity*> collidables, float dt) override;
+	void update(std::vector<class Entity*>& collidables, float dt) override;
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 	void draw();
 	void handleCollisions(Player* player, int onx);

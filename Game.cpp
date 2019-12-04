@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "SplashState.h"
 #include "GameState.h"
+#include "MapState.h"
 #include "State.h"
 #include <algorithm>
 #include <time.h>
@@ -48,7 +49,7 @@ Game::Game(int width, int height, const char* title) {
 	else {
 		printf("Initialized Audio");
 	}
-	_data->machine.AddState(StateRef(new GameState(_data, "")));
+	_data->machine.AddState(StateRef(new SplashState(_data)));
 	this->Run();
 }
 
@@ -74,17 +75,18 @@ void Game::Run() {
 		_data->machine.ProcessStateChanges();
 		_data->machine.GetActiveState()->HandleInput();
 		_data->machine.GetActiveState()->Update(deltaTime/100.0f);
-		
 		CalculateFPS();
 		frameEnd = SDL_GetTicks();
 		deltaTime = (frameEnd - frameStart);
+
 		_data->machine.GetActiveState()->Draw();
+		
 
 		//print frame rate
 		static int frameCounter = 0;
 		frameCounter++;
 		if (frameCounter == 60) {
-			//printf("FPS: %f\n", fps);
+			printf("FPS: %f\n", fps);
 			timeCounter = 0;
 			frameCounter = 0;
 		}

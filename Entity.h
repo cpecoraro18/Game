@@ -16,17 +16,17 @@ class Entity {
 public:
 
 	Entity(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
-	Entity(){}
+	Entity() {}
 
 	virtual ~Entity();
 
-	virtual void update(std::vector<class Entity*>, float dt);
+	virtual void update(std::vector<class Entity*>& collidables, float dt);
 	virtual void draw() = 0;
 	virtual void handleinput(SDL_Event event, const Uint8* keystate) {}
 	virtual void Animate();
 	virtual void handleCollisions() {};
 
-	void loadtexture(const char * name, int tilex, int tiley);
+	void loadtexture(const char* name, int tilex, int tiley);
 	void loadHitboxTexture(const char* name, int tilex, int tiley);
 
 

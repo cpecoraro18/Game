@@ -4,7 +4,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "Game.h"
-#include "Button.h"
+#include "LevelButton.h"
 #include <vector>
 
 
@@ -25,7 +25,7 @@ private:
 	SDL_Texture* map;
 	SDL_Rect src, dest;
 
-	std::vector<class Button*> levels;
+	std::vector<class LevelButton*> levels;
 
 	Button* backButton;
 };

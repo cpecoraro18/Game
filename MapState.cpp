@@ -2,6 +2,7 @@
 #include "MenuState.h"
 #include "TextureManager.h"
 #include <time.h>
+#include <string>
 #include "GameState.h"
 #include "DEFINITIONS.h"
 
@@ -19,9 +20,9 @@ MapState::~MapState() {
 	data->audioManager.DestroyMusic();
 }
 bool MapState::Init() {
-	data->texmanager.LoadTexture("Images/Location.png", "location", data->renderer);
-	data->texmanager.LoadTexture("Images/Map2.png", "map", data->renderer);
-	data->texmanager.LoadTexture("Images/BackButton.png", "back button", data->renderer);
+	data->texmanager.LoadTexture("Assets/Location.png", "location", data->renderer);
+	data->texmanager.LoadTexture("Assets/Map2.png", "map", data->renderer);
+	data->texmanager.LoadTexture("Assets/BackButton.png", "back button", data->renderer);
 	map = data->texmanager.GetTexture("map");
 	src.x = 0;
 	src.y = 0;
@@ -32,11 +33,20 @@ bool MapState::Init() {
 	dest.h = SCREEN_HEIGHT;
 	dest.w = SCREEN_WIDTH;
 
-	Button* level1Button = new Button(data, SCREEN_WIDTH/6, SCREEN_HEIGHT/2, 32, 32, 32, 32);
+	LevelButton* level1Button = new LevelButton(data, SCREEN_WIDTH/6, SCREEN_HEIGHT/2, 32, 32, 32, 32, "Level1");
 	level1Button->loadtexture( "location", 0, 0);
 	levels.push_back(level1Button);
+	LevelButton* level2Button = new LevelButton(data, SCREEN_WIDTH / 6, 2*SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level2");
+	level2Button->loadtexture("location", 0, 0);
+	levels.push_back(level2Button);
+	LevelButton* level3Button = new LevelButton(data, SCREEN_WIDTH / 6, 2.5 * SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level3");
+	level3Button->loadtexture("location", 0, 0);
+	levels.push_back(level3Button);
+	LevelButton* level4Button = new LevelButton(data, 2*SCREEN_WIDTH / 6, 2.5 * SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level4");
+	level4Button->loadtexture("location", 0, 0);
+	levels.push_back(level4Button);
 
-	backButton = new Button(data, 50, 50, 64, 32, 100, 50);
+	backButton = new Button(data, 50, 50, 64, 32, BUTTON_WIDTH, BUTTON_HEIGHT);
 	backButton->loadtexture("back button", 0, 0);
 	return true;
 }
@@ -101,7 +111,7 @@ void MapState::HandleClick(int x, int y) {
 		if (x > level->dest.x && x < level->dest.x + level->dest.w && y > level->dest.y && y < level->dest.y + level->dest.h) {
 			level->handleClick();
 
-			data->machine.AddState(StateRef(new GameState(data, "")));
+			data->machine.AddState(StateRef(new GameState(data, level->getLevel())));
 			SDL_Delay(100);
 		}
 	}

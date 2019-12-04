@@ -3,7 +3,7 @@ Vector* gravity = new Vector(0, 1);
 
 
 
-Entity::Entity(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data): data(data), height(h), width(w), frames(nFrames), speed(frameSpeed) {
+Entity::Entity(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data) : data(data), height(h), width(w), frames(nFrames), speed(frameSpeed) {
 	//set physics
 	this->position = new Vector(x, y);
 	this->velocity = new Vector();
@@ -40,20 +40,20 @@ Entity::~Entity() {
 
 }
 
-void Entity::update(std::vector<class Entity*> collidables, float dt) {
+void Entity::update(std::vector<class Entity*>& collidables, float dt) {
 	//apply accelerations
 	velocity->x += gravity->x;
 	velocity->y += gravity->y;
 	velocity->x += acceleration->x;
 	velocity->y += acceleration->y;
 
-	
+
 
 }
 
 void Entity::loadHitboxTexture(const char* name, int tilex, int tiley) {
 	hitboxTexture = data->texmanager.GetTexture(name);
-	
+
 }
 
 void Entity::loadtexture(const char* name, int tilex, int tiley) {
@@ -62,6 +62,5 @@ void Entity::loadtexture(const char* name, int tilex, int tiley) {
 	src.y = tiley;
 }
 void Entity::Animate() {
-	src.x = src.w*static_cast<int>((SDL_GetTicks() / speed) % frames);
+	src.x = src.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
 }
-

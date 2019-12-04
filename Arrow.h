@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Vector.h"
 #include "Entity.h"
+#include "Enemy.h"
 #include "AABB.h"
 #include <vector>
 
@@ -17,8 +18,8 @@ public:
 	void loadtexture(const char* name, int tilex, int tiley);
 	void loadHitboxTexture(const char* name, int tilex, int tiley);
 
-	void update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt);
-	void handleCollisions(std::vector<class Entity*> collidables);
+	void update(std::vector<class Entity*>& collidables, float dt);
+	void handleCollisions(std::vector<class Entity*>& collidables);
 	void handleinput(SDL_Event event);
 	void draw();
 	int getNumCoinsHit();

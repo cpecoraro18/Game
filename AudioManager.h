@@ -4,14 +4,15 @@
 #define SRC_AUDIOMANAGER_H_
 #include "SDL_Mixer.h"
 #include <map>
+#include <string>
 
 class AudioManager {
 public:
-	void LoadChunk(const char* fileName, const char* name);
+	void LoadChunk(std::string fileName, const char* name);
 	Mix_Chunk* GetChunk(const char* name);
 	void DestroyChunks();
 
-	void LoadMusic(const char* fileName, const char* name);
+	void LoadMusic(std::string fileName, const char* name);
 	Mix_Music* GetMusic(const char* name);
 	void DestroyMusic();
 

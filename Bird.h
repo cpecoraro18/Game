@@ -4,15 +4,17 @@
 
 #include "Vector.h"
 #include "Entity.h"
+#include "Enemy.h"
+#include "Player.h"
 
-class Bird : public Entity {
+class Bird : public Enemy {
 public:
 
 	Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef data);
 
 	~Bird();
 
-	void update(std::vector<class Entity*> collidables, float dt) override;
+	void update(std::vector<class Entity*>& collidables, float dt, Player* player);
 	void draw();
 	void handleCollisions();
 	void Animate();

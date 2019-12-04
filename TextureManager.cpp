@@ -2,9 +2,9 @@
 #include "SDL_image.h"
 #include <stdio.h>
 
-void TextureManager::LoadTexture(const char* texture, const char* name, SDL_Renderer* renderer) {
-
-	SDL_Surface* tempSurface = IMG_Load(texture);
+void TextureManager::LoadTexture(std::string filename, const char* name, SDL_Renderer* renderer) {
+	const char* charFilename = filename.c_str();
+	SDL_Surface* tempSurface = IMG_Load(charFilename);
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	if (tex != NULL) {
 		this->_textures[name] = tex;

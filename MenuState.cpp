@@ -20,9 +20,9 @@ MenuState::~MenuState() {
 
 bool MenuState::Init() {
 	printf("Loading Menu textures...\n");
-	data->texmanager.LoadTexture("Images/MenuBackground.png", "menu background", data->renderer);
-	data->texmanager.LoadTexture("Images/PlayButton.png", "play button", data->renderer);
-	data->texmanager.LoadTexture("Images/Quit.png", "quit button", data->renderer);
+	data->texmanager.LoadTexture("Assets/MenuBackground.png", "menu background", data->renderer);
+	data->texmanager.LoadTexture("Assets/PlayButton.png", "play button", data->renderer);
+	data->texmanager.LoadTexture("Assets/Quit.png", "quit button", data->renderer);
 	printf("Textures loaded\n");
 	_background = data->texmanager.GetTexture("menu background");
 	src.x = 0;

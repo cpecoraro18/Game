@@ -68,7 +68,7 @@ void Arrow::draw() {
 	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 }
 
-void Arrow::update(std::vector<class Entity*> collidables, std::vector<class Entity*> enemies, float dt) {
+void Arrow::update(std::vector<class Entity*>& collidables, float dt) {
 	count++;
 	
 	if (count > 1000) {
@@ -85,12 +85,11 @@ void Arrow::update(std::vector<class Entity*> collidables, std::vector<class Ent
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x+hitboxXBuffer, position->y + hitboxYBuffer);
 	handleCollisions(collidables);
-	handleCollisions(enemies);
 	//src.x = src.w*static_cast<int>((SDL_GetTicks() / speed) % frames);
 	return;
 }
 
-void Arrow::handleCollisions(std::vector<class Entity*> collidables) {
+void Arrow::handleCollisions(std::vector<class Entity*>& collidables) {
 	double theta;
 	for (auto&& ent : collidables) {
 

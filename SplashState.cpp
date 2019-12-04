@@ -17,7 +17,7 @@ SplashState::~SplashState() {
 }
 
 bool SplashState::Init() {
-	data->texmanager.LoadTexture("Images/SplashScreen.png", "splash background", data->renderer);
+	data->texmanager.LoadTexture("Assets/SplashScreen.png", "splash background", data->renderer);
 	_background = data->texmanager.GetTexture("splash background");
 	src.x = 0;
 	src.y = 0;

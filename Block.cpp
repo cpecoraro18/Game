@@ -14,6 +14,7 @@ Block::Block(GameDataRef data, float x, float y, float h, float w): Entity(x, y,
 	destHitbox.y = y  - data->camera.y;
 	destHitbox.w = w;
 	destHitbox.h = h;
+	animated = false;
 
 }
 
@@ -37,8 +38,8 @@ Block::~Block() {
 
 
 void Block::draw() {
-	dest.x = position->x - data->camera.x;
-	dest.y = position->y - data->camera.y;
+	dest.x = (int)position->x - data->camera.x;
+	dest.y = (int)position->y - data->camera.y;
 	destHitbox.x = position->x -data->camera.x;
 	destHitbox.y = position->y -data->camera.y;
 
@@ -46,8 +47,7 @@ void Block::draw() {
 	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 }
 
-void Block::update(std::vector<class Entity*> collidables, float dt) {
-	Entity::update(collidables, dt);
+void Block::update(std::vector<class Entity*>& collidables, float dt) {
 	hitbox->setDimentions(position->x, position->y );
 	if (animated) {
 		Entity::Animate();
