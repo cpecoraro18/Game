@@ -1,103 +1,154 @@
-
 #include "Game.h"
-#include "Playerh.h"
+#include "SplashState.h"
+#include "GameState.h"
+#include "MapState.h"
+#include "State.h"
+#include <algorithm>
+#include <time.h>
 
-int lvl1[20][25] = {
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0 },
-	{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-	{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
 
-	
-};
+bool Game::running = true;
 
-bool Game::init() {
-	window = new Window();
+Game::Game(int width, int height, const char* title) {
 
-	if (!window->init("Game", 800, 640, false)) {
-		printf("Failed to initialize!\n");
-		return false;
+	fps = 0;
+	frameTime = 0;
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		
+		("SDL could not initialize SDL_Error: %s\n", SDL_GetError());
+		return;
 	}
 	else {
-
-		if (!window->loadMedia()) {
-			printf("Failed to load media!\n");
-			return false;
+		printf("SDL Initialized\n");
+		//create window
+		_data->window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+		if (_data->window == NULL) {
+			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			return;
+		}
+		else {
+			printf("Window created\n");
+			//create renderer
+			_data->renderer = SDL_CreateRenderer(_data->window, -1, 0);
+			if (_data->renderer == NULL) {
+				printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+				return;
+			}
+			//get window surface
+			printf("Renderer Created\n");
+			_data->surface = SDL_GetWindowSurface(_data->window);
+			_data->camera = { 0, 0, width, height };
 		}
 	}
-
-	map = new Map();
-	map->LoadMap(window->getRenderer(), lvl1, "Images/backround1.jpg", entities);
-	player = new Player(300, 300, 100, 100);
-	entities.push_back(player); 
-	player->loadtexture("Images/Enemy1.png", window->getRenderer());
-	return true;
+	//add states
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		printf("Audio could not be created! Mix_Error: %s\n", Mix_GetError());
+		return; 
+	}
+	else {
+		printf("Initialized Audio");
+	}
+	
+	_data->machine.AddState(StateRef(new SplashState(_data)));
+	this->Run();
 }
 
-void Game::run() {
-
-	running = true;
+void Game::Run() {
 	
-
-	//while application is running
+	float frameStart, frameEnd, deltaTime;
+	frameStart = 0;
+	frameEnd = 0;
+	deltaTime = 0;
+	float timeCounter = 0;
+	
 	while (running) {
+	
+		if (deltaTime < 1) {
+			frameStart = SDL_GetTicks();
+			SDL_Delay(1);
+			frameEnd = SDL_GetTicks();
+			deltaTime = (frameEnd - frameStart);
+		}
+		timeCounter += deltaTime;
 
 		frameStart = SDL_GetTicks();
+		_data->machine.ProcessStateChanges();
+		_data->machine.GetActiveState()->HandleInput();
+		_data->machine.GetActiveState()->Update();
+		CalculateFPS();
+		frameEnd = SDL_GetTicks();
+		deltaTime = (frameEnd - frameStart);
 
-		handleEvents();
-		update();
-		window->render(map, (Player*)player);
-		window->renderEntity(entities);
+		_data->machine.GetActiveState()->Draw();
+		
 
-		frameTime = SDL_GetTicks()-frameStart;
-
-		if (frameDelay > frameStart) {
-			SDL_Delay(frameTime);
+		//print frame rate
+		static int frameCounter = 0;
+		frameCounter++;
+		if (frameCounter == 60) {
+			printf("FPS: %f\n", fps);
+			timeCounter = 0;
+			frameCounter = 0;
 		}
-	}
-	clean();
-}
 
-void Game::handleEvents() {
-	SDL_Event event;
-	//Handle events on queue
-	while (SDL_PollEvent(&event) != 0)
-	{
-		//User requests quit
-		if (event.type == SDL_QUIT)
-		{
-			running = false;
+		//limit frame rate
+		if (1000.0f / maxFPS > deltaTime) {
+			SDL_Delay(1000.0f/maxFPS - deltaTime);
 		}
-		//User presses a key
-		player->handleinput(event);
+		
+		
 		
 	}
+	
+	//Destroy window
+	SDL_DestroyWindow(_data->window);
+	_data->window = NULL;
+	//destroy renderer
+	SDL_DestroyRenderer(_data->renderer);
+
+	//Quit SDL subsystems
+	SDL_Quit();
+
 }
 
+void Game::CalculateFPS() {
+	static const int NUM_SAMPLES = 100;
+	static float frameTimes[NUM_SAMPLES];
+	static int currentFrame = 0;
 
-void Game::update() {
-	player->update(entities);
+	static float prevTicks = SDL_GetTicks();
+	float currentTicks;
+	currentTicks = SDL_GetTicks();
 
-}
+	frameTime = currentTicks - prevTicks;
+	frameTimes[currentFrame%NUM_SAMPLES] = frameTime;
 
+	prevTicks = currentTicks;
+	int count;
+	currentFrame++;
+	if (currentFrame < NUM_SAMPLES) {
+		count = currentFrame;
+	}
+	else {
+		count = NUM_SAMPLES;
+	}
 
+	float frameTimeAverage = 0;
 
-void Game::clean() {
-	window->close();
+	for (int i = 0; i < count; i++) {
+		frameTimeAverage += frameTimes[i];
+	}
+	frameTimeAverage /= count;
+
+	if (frameTimeAverage > 0) {
+		fps = 1000.0f / frameTimeAverage;
+	}
+
+	else {
+		fps = 61.0f;
+	}
+	
+	
+
 }

@@ -1,3 +1,4 @@
+#pragma once
 
 #ifndef SRC_ENTITY_TYPE_H_
 #define SRC_ENTITY_TYPE_H_
@@ -14,7 +15,7 @@
 
 
 enum EntityType {
-	kPlayer = 0, kEnemy, kUndefined
+	kPlayer = 0, kEnemy, kBlock, kCoin, kSpike, kKey, kBird, kKnight, kEndLevel, kUndefined
 };
 
 inline EntityType get_entity_type(const std::string& type) {
@@ -23,6 +24,12 @@ inline EntityType get_entity_type(const std::string& type) {
 	}
 	if (type == "Enemy") {
 		return kEnemy;
+	}
+	if (type == "Block") {
+		return kBlock;
+	}
+	if (type == "Key") {
+		return kKey;
 	}
 	return kUndefined;
 }

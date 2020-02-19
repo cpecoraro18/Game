@@ -1,0 +1,31 @@
+﻿  Bird.cpp
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(49,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(50,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(51,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Block.cpp
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(52,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(5,85): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(5,82): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(5,79): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(5,76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(13,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(14,20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(15,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(16,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(21,115): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(21,112): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(21,109): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(21,106): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(25,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(26,19): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(27,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(28,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(43,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  SplashState.cpp
+  Generating Code...
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Block.cpp(44,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Game.vcxproj -> C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\x64\Debug\Game.exe

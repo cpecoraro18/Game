@@ -2,27 +2,22 @@
 #ifndef SRC_BLOCK_H_
 #define SRC_BLOCK_H_
 #include "SDL.h"
-#include "TextureManager.h"
 #include "Entity.h"
+#include "Player.h"
 
 class Block : public Entity {
 public:
 
-	Block(float x, float y, float h, float w);
-	~Block() {}
+	Block(GameDataRef data, float x, float y, float h, float w);
+	Block(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
+	~Block();
 
-	void loadtexture(const char* path, SDL_Renderer* ren);
-	void update(std::vector<class Entity*> &entities);
-	void handleinput(SDL_Event event);
-	void draw(SDL_Renderer* ren);
-
+	void update(World* world) override;
+	void handleinput(SDL_Event event, const Uint8 *keystate);
+	void draw();
+	void handleCollisions(Player* player, int onx);
 
 private:
-
-	SDL_Rect src, dest;
-	SDL_Texture* texture;
 };
-
-
 
 #endif /* SRC_BLOCK_H_ */

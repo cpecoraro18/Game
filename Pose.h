@@ -34,9 +34,9 @@ public:
 	* @param in_x The X component of the Pose.
 	* @param in_y The Y component of the Pose.
 	*/
-	Pose(double in_x, double in_y) : x(in_x), y(in_y) {}
+	Pose(float in_x, float in_y) : x(in_x), y(in_y) {}
 
-	Pose(double in_x, double in_y, double in_theta)
+	Pose(float in_x, float in_y, float in_theta)
 		: x(in_x),
 		y(in_y),
 		theta(in_theta) {}
@@ -60,29 +60,29 @@ public:
 	* @return The Pose of the vector difference of the two vectors.
 	**/
 	Pose operator-(const Pose &rhs) const {
-		double x_new = x - rhs.x;
-		double y_new = y - rhs.y;
-		double theta_new = theta - rhs.theta;
+		float x_new = x - rhs.x;
+		float y_new = y - rhs.y;
+		float theta_new = theta - rhs.theta;
 		return Pose(x_new, y_new, theta_new);
 	}
 
 	/**
 	* @brief Length. Returns the length of a Pose.
 	**/
-	double Length() const {
+	float Length() const {
 		return sqrt(pow(x, 2) + pow(y, 2));
 	}
 
-	double x;
-	double y;
-	double theta;
+	float x;
+	float y;
+	float theta;
 };
 
 /*******************************************************************************
 * Forward Decls
 ******************************************************************************/
-constexpr double deg2rad(double deg) { return deg * 3.1415 / 180.0; }
-constexpr double rad2deg(double rad) { return rad * 180.0 / 3.1415; }
+constexpr float deg2rad(float deg) { return deg * 3.1415 / 180.0; }
+constexpr float rad2deg(float rad) { return rad * 180.0 / 3.1415; }
 
 
 
