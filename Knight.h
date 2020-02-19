@@ -16,13 +16,13 @@ public:
 
 	~Knight(); 
 
-	void update(std::vector<class Entity*>& collidables, float dt, Player* player);
+	void update(World* world);
 
 	void draw();
 
 	void handleCollisions();
 
-	void handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*>& collidables, int onx);
 
 	void Animate(Player* player);
 

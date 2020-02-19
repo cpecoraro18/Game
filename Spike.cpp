@@ -11,18 +11,18 @@ Spike::Spike(GameDataRef data, float x, float y, float h, float w, bool flipped)
 	src.h = 32;
 	src.w = 32;
 	if (flipped) {
-		hitbox = new AABB(x + 20, y, w - 40, h - 40);
-		destHitbox.x = position->x + 20 - data->camera.x;
+		hitbox = new AABB(x+10, y, w-10, h - 80);
+		destHitbox.x = position->x + 10 - data->camera.x;
 		destHitbox.y = position->y - data->camera.y;
-		destHitbox.h = height - 40;
-		destHitbox.w = width - 40;
+		destHitbox.h = height - 80;
+		destHitbox.w = width - 10;
 	}
 	else {
-		hitbox = new AABB(x + 20, y + 40, w - 40, h);
-		destHitbox.x = position->x + 20 - data->camera.x;
-		destHitbox.y = position->y + 40 - data->camera.y;
+		hitbox = new AABB(x + 10, y + 80, w - 10, h);
+		destHitbox.x = position->x + 10 - data->camera.x;
+		destHitbox.y = position->y + 80 - data->camera.y;
 		destHitbox.h = height;
-		destHitbox.w = width - 40;
+		destHitbox.w = width - 10;
 	}
 }
 
@@ -31,8 +31,7 @@ Spike::~Spike() {
 	//printf("Deleting Spike\n"); 
 	delete hitbox;
 }
-void Spike::update(std::vector<class Entity*>& collidables, float dt) {
-	Entity::update(collidables, dt);
+void Spike::update(World* world) {
 	hitbox->setDimentions(position->x+20, position->y+40);
 }
 
@@ -46,17 +45,18 @@ void Spike::handleinput(SDL_Event event, const Uint8 *keystate) {
 
 }
 void Spike::draw() {
+
 	dest.x = position->x - data->camera.x;
 	dest.y = position->y - data->camera.y;
 	if (flipped) {
-		destHitbox.x = position->x + 20 - data->camera.x;
+		destHitbox.x = position->x + 10 - data->camera.x;
 		destHitbox.y = position->y - data->camera.y;
 	}
 	else {
-		destHitbox.x = position->x + 20 - data->camera.x;
-		destHitbox.y = position->y + 40 - data->camera.y;
+		destHitbox.x = position->x + 10 - data->camera.x;
+		destHitbox.y = position->y + 60 - data->camera.y;
 	}
 	data->texmanager.Draw(texture, src, dest, data->renderer);
-	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
+	data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 
 }

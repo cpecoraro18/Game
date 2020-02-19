@@ -47,7 +47,7 @@ void Block::draw() {
 	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 }
 
-void Block::update(std::vector<class Entity*>& collidables, float dt) {
+void Block::update(World* world) {
 	hitbox->setDimentions(position->x, position->y );
 	if (animated) {
 		Entity::Animate();

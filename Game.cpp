@@ -49,6 +49,7 @@ Game::Game(int width, int height, const char* title) {
 	else {
 		printf("Initialized Audio");
 	}
+	
 	_data->machine.AddState(StateRef(new SplashState(_data)));
 	this->Run();
 }
@@ -74,7 +75,7 @@ void Game::Run() {
 		frameStart = SDL_GetTicks();
 		_data->machine.ProcessStateChanges();
 		_data->machine.GetActiveState()->HandleInput();
-		_data->machine.GetActiveState()->Update(deltaTime/100.0f);
+		_data->machine.GetActiveState()->Update();
 		CalculateFPS();
 		frameEnd = SDL_GetTicks();
 		deltaTime = (frameEnd - frameStart);

@@ -3,7 +3,6 @@
 #define SRC_PLAYER_H_
 
 #include "Entity.h"
-#include "Bow.h"
 #include "Arrow.h"
 #include "SDL_mixer.h"
 #include <vector>
@@ -17,13 +16,13 @@ public:
 
 	~Player();
 
-	void update(std::vector<class Entity*>& collidables, float dt);
+	void update(World* world);
 
 	void draw();
 
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 
-	void handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt);
+	void handleCollisions(std::vector<class Entity*>& collidables, int onx);
 
 	void Animate();
 
@@ -71,6 +70,7 @@ private:
 	bool airFriction;
 
 	bool shooting;
+	bool aiming;
 	bool shootingLeft;
 	bool shootingRight;
 	double angle;
@@ -91,6 +91,9 @@ private:
 	float shootSpeed = 40.0f;
 
 	bool playing = true;
+
+	int armFrames;
+	int armSpeed;
 
 };
 

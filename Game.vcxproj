@@ -160,7 +160,6 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinCounter.cpp" />
@@ -173,7 +172,7 @@
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="LevelButton.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="MapState.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -195,7 +194,6 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="Bird.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="Bow.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinCounter.h" />
@@ -220,7 +218,7 @@
     <ClInclude Include="SplashState.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="Key.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pose.h" />
     <ClInclude Include="Spike.h" />

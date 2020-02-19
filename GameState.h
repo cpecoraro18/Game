@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "Knight.h"
 #include "Bird.h"
-#include "Map.h"
+#include "World.h"
 #include "Button.h"
 #include "State.h"
 #include "Game.h"
@@ -28,11 +28,10 @@ public:
 
 	bool Init();
 	void HandleInput();
-	void Update(float dt);
+	void Update();
 	void Draw();
 	void HandleClick(int x, int y);
 
-	void loadCharacters(std::string path);
 	void Resume();
 	void clean();
 
@@ -40,16 +39,18 @@ public:
 
 private:
 	GameDataRef data;
-	std::vector<class Enemy*> enemies;
-	Player* player;
-	Entity* bird;
-	Knight* knight;
-	Map* map;
+	
+	
+	World* world;
 	Button* pauseButton;
 	int levelWidth;
 	int levelHeight;
 
 	std::string level;
+
+	SDL_Rect srcCH;
+	SDL_Rect destCH;
+	SDL_Texture* CHTexture;
 
 	bool paused;
 

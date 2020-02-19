@@ -5,6 +5,10 @@
 void TextureManager::LoadTexture(std::string filename, const char* name, SDL_Renderer* renderer) {
 	const char* charFilename = filename.c_str();
 	SDL_Surface* tempSurface = IMG_Load(charFilename);
+	if (tempSurface == NULL) {
+		printf("Unable to open texture");
+		exit(1);   // call system to stop
+	}
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	if (tex != NULL) {
 		this->_textures[name] = tex;

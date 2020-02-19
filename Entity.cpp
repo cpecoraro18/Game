@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "World.h"
 Vector* gravity = new Vector(0, 1);
 
 
@@ -40,7 +41,7 @@ Entity::~Entity() {
 
 }
 
-void Entity::update(std::vector<class Entity*>& collidables, float dt) {
+void Entity::update(World* world) {
 	//apply accelerations
 	velocity->x += gravity->x;
 	velocity->y += gravity->y;

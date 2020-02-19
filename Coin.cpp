@@ -19,8 +19,7 @@ Coin::~Coin() {
 }
 
 
-void Coin::update(std::vector<class Entity*>& collidables, float dt) {
-	Entity::update(collidables, dt);
+void Coin::update(World* world) {
 	hitbox->setDimentions(position->x, position->y);
 	Entity::Animate();
 }

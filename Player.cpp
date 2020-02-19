@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "SDL.h"
 #include "TextureManager.h"
-#include "Map.h"
+#include "World.h"
 #include "MapState.h"
 #include <algorithm>
 
@@ -73,7 +73,7 @@ Player::~Player() {
 
 
 
-void Player::update(std::vector<class Entity*>& collidables, float dt) {
+void Player::update(World* world) {
 	if (!playing) {
 		data->machine.AddState(StateRef(new MapState(data)));
 	}
@@ -99,7 +99,7 @@ void Player::update(std::vector<class Entity*>& collidables, float dt) {
 	
 		}
 		count++;
-		Entity::update(collidables, dt);
+		Entity::update(world);
 		//cap max speed
 		if (velocity->x > maxSpeed->x) {
 			velocity->x = maxSpeed->x;
@@ -122,7 +122,7 @@ void Player::update(std::vector<class Entity*>& collidables, float dt) {
 	
 	
 	count++;
-	Entity::update(collidables, dt);
+	Entity::update(world);
 	//cap max speed
 	if (velocity->x > maxSpeed->x) {
 		velocity->x = maxSpeed->x;
@@ -157,7 +157,7 @@ void Player::update(std::vector<class Entity*>& collidables, float dt) {
 	//change x position
 	position->x += velocity->x;
 	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
-	handleCollisions(collidables, 1, dt);
+	handleCollisions(world->collidables, 1);
 
 	//handle friction
 	if (groundFriction) {
@@ -169,13 +169,13 @@ void Player::update(std::vector<class Entity*>& collidables, float dt) {
 	//change y position
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
-	handleCollisions(collidables, 0, dt);
+	handleCollisions(world->collidables, 0);
 	
 	//update arrows
 	for (int i = 0; i < arrows.size(); i++) {
-		arrows[i]->update(collidables, dt);
+		arrows[i]->update(world);
 		coinCount += arrows[i]->getNumCoinsHit();
-			
+		keyCount += arrows[i]->getNumKeysHit();
 		if (arrows[i]->dead) {
 			arrows.erase(arrows.begin() + i);
 			
@@ -187,7 +187,7 @@ void Player::update(std::vector<class Entity*>& collidables, float dt) {
 	
 }
 
-void Player::handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt) {
+void Player::handleCollisions(std::vector<class Entity*>& collidables, int onx) {
 	int buffer = 100;
 	for (auto&& ent : collidables) {
 		//check if on screen
@@ -343,11 +343,18 @@ void Player::Animate() {
 				src.x = 0;
 				src.y = 32*6;
 				srcarm.x = 0;
+				srcarm.y = 0;
+				armFrames = 7;
+				armSpeed = 200;
+
 			}
 			else if (shootingLeft) {
 				src.x = 0;
 				src.y = 32*7;
-				srcarm.x = 32;
+				srcarm.x = 0;
+				srcarm.y = 32;
+				armFrames = 7;
+				armSpeed = 200;
 			}
 			frames = 1;
 		}
@@ -363,6 +370,10 @@ void Player::Animate() {
 		return;
 	}
 	Entity::Animate();
+	if (srcarm.x != 7) {
+		srcarm.x = srcarm.w * static_cast<int>((SDL_GetTicks() / armSpeed) % armFrames);
+	}
+	
 }
 
 
@@ -490,10 +501,11 @@ void Player::die() {
 }
 
 void Player::shoot(float speedx, float speedy) {
-	Arrow* arrow = new Arrow(data, position->x + 10, position->y + 10, BLOCK_SIZE, BLOCK_SIZE, speedx, speedy);
+	Arrow* arrow = new Arrow(data, position->x + 10, position->y + 10, BLOCK_SIZE, BLOCK_SIZE, speedx, speedy-2);
 	arrow->loadHitboxTexture("hitbox", 0, 0);
 	arrows.emplace_back(arrow);
 	Mix_PlayChannel(-1, bowSound, 0);
+	srcarm.x = 0;
 
 }
 

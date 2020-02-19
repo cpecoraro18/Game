@@ -18,8 +18,7 @@ Key::~Key(){
 }
 
 
-void Key::update(std::vector<class Entity*>& collidables, float dt) {
-	Entity::update(collidables, dt);
+void Key::update(World* world) {
 	hitbox->setDimentions(position->x, position->y);
 	Entity::Animate();
 }

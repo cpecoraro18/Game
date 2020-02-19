@@ -30,15 +30,14 @@ Knight::~Knight() {
 }
 
 
-void Knight::update(std::vector<class Entity*>& collidables, float dt, Player* player) {
-	Entity::update(collidables, dt);
-
+void Knight::update(World* world) {
+	Entity::update(world);
 	position->x += velocity->x;
 	hitbox->setDimentions(position->x+hitboxXBuffer, position->y + hitboxYBuffer);
-	handleCollisions(collidables, 1, dt);
+	handleCollisions(world->collidables, 1);
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x + hitboxXBuffer, position->y + hitboxYBuffer);
-	handleCollisions(collidables, 0, dt);
+	handleCollisions(world->collidables, 0);
 
 	if (velocity->x > knightmaxSpeed->x) {
 		velocity->x = knightmaxSpeed->x;
@@ -61,23 +60,23 @@ void Knight::update(std::vector<class Entity*>& collidables, float dt, Player* p
 
 	}
 	
-	if (position->x < player->position->x && abs(position->x - player->position->x) < 400 && abs(position->y - player->position->y) < 200) {
+	if (position->x < world->player->position->x && abs(position->x - world->player->position->x) < 1000 && abs(position->y - world->player->position->y) < 200) {
 		attacking = false;
 		goRight();
 	}
-	else if (position->x > player->position->x && abs(position->x - player->position->x) < 400 && abs(position->y - player->position->y) < 200) {
+	else if (position->x > world->player->position->x && abs(position->x - world->player->position->x) < 1000 && abs(position->y - world->player->position->y) < 200) {
 		attacking = false;
 		goLeft();
 	}
 
-	if (abs(player->position->x - position->x)< 45 ) {
+	if (abs(world->player->position->x - position->x)< 45 ) {
 		acceleration->x = 0;
 		velocity->x = 0;
 		attacking = true;
 	}
 	
 	if (animated) {
-		Animate(player);
+		Animate(world->player);
 	}
 	return;
 }
@@ -92,7 +91,7 @@ void Knight::draw() {
 	destHitbox.y = position->y + hitboxYBuffer - data->camera.y;
 
 	data->texmanager.Draw(texture, src, dest, data->renderer);
-	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
+	data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 
 }
 
@@ -104,7 +103,7 @@ void Knight::handleCollisions() {
 	
 }
 
-void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx, float dt) {
+void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx) {
 	for (auto&& ent : collidables) {
 
 		if (ent != this && !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {

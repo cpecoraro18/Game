@@ -1,7 +1,7 @@
 #pragma once
 
-#define SCREEN_WIDTH 1950
-#define SCREEN_HEIGHT 1100
+#define SCREEN_WIDTH 1500
+#define SCREEN_HEIGHT 800
 
 #define NUMBER_SPRITE_WIDTH 7
 #define	NUMBER_SPRITE_HEIGHT 10

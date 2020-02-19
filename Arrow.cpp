@@ -68,7 +68,7 @@ void Arrow::draw() {
 	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 }
 
-void Arrow::update(std::vector<class Entity*>& collidables, float dt) {
+void Arrow::update(World* world) {
 	count++;
 	
 	if (count > 1000) {
@@ -84,77 +84,81 @@ void Arrow::update(std::vector<class Entity*>& collidables, float dt) {
 	position-> x += velocity->x;
 	position->y += velocity->y;
 	hitbox->setDimentions(position->x+hitboxXBuffer, position->y + hitboxYBuffer);
-	handleCollisions(collidables);
+	handleCollisions(world->collidables);
+	handleCollisions(world->enemies);
 	//src.x = src.w*static_cast<int>((SDL_GetTicks() / speed) % frames);
 	return;
 }
 
 void Arrow::handleCollisions(std::vector<class Entity*>& collidables) {
 	double theta;
+	int buffer = 0;
 	for (auto&& ent : collidables) {
+		if (ent->position->x >= data->camera.x - buffer && ent->position->x + ent->width <= data->camera.x + data->camera.w + buffer &&
+			ent->position->y >= data->camera.y - buffer && ent->position->y + ent->height <= data->camera.y + data->camera.h + buffer) {
+		
 
-		if ( !ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {
-			switch (ent->type_) {
-			case(kBlock):
-				stuck = true;
-				theta = atan2(velocity->y, velocity->x);
-				angle = ((theta * 180) / M_PI);
-				if (velocity->x > 0) {
-					// collision occurred on the right
-					//position->x -= velocity->x;
-					velocity->x = 0;
-					velocity->y = 0;
-					//printf("Right");
-					return;
-				}
-				if (velocity->x < 0 ) {
-					// collision occurred on the left
-					//position->x -= velocity->x;
-					velocity->x = 0;
-					velocity->y = 0;
-					//printf("Left");
-					return;
-				}
-				if (velocity->y > 1 ) {
-					// collision occurred on the bottom
-					//position->y -= velocity->y;
-					velocity->x = 0;
-					velocity->y = 0;
-					//printf("Bottom");
-					return;
+			if (!ent->dead && Collision::checkAABB(*hitbox, *(ent->hitbox))) {
+				switch (ent->type_) {
+				case(kBlock):
+					stuck = true;
+					theta = atan2(velocity->y, velocity->x);
+					angle = ((theta * 180) / M_PI);
+					if (velocity->x > 0) {
+						// collision occurred on the right
+						//position->x -= velocity->x;
+						velocity->x = 0;
+						velocity->y = 0;
+						//printf("Right");
+						return;
+					}
+					if (velocity->x < 0) {
+						// collision occurred on the left
+						//position->x -= velocity->x;
+						velocity->x = 0;
+						velocity->y = 0;
+						//printf("Left");
+						return;
+					}
+					if (velocity->y > 1) {
+						// collision occurred on the bottom
+						//position->y -= velocity->y;
+						velocity->x = 0;
+						velocity->y = 0;
+						//printf("Bottom");
+						return;
 
-				}
-				if (velocity->y < 0) {
-					// collision occurred on the top
-					//position->y -= velocity->y;
-					velocity->x = 0;
-					velocity->y = 0;
-					//printf("Top");
-					return;
-				}
-				break;
-			case(kCoin):
-				numCoinsHit++;
-				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollisions();
-				ent->dead = true;
-				break;
-			case(kBird):
-				ent->handleCollisions();
-				break;
-			case(kKnight):
-				ent->handleCollisions();
-				break;
-			/*case(kKey):
-				keyCount++;
-				//printf("Coint count: %d\n", coinCount);
-				ent->handleCollision();
-				break;
-			case(kSpike):
-				die();
-				break;*/
+					}
+					if (velocity->y < 0) {
+						// collision occurred on the top
+						//position->y -= velocity->y;
+						velocity->x = 0;
+						velocity->y = 0;
+						//printf("Top");
+						return;
+					}
+					break;
+				case(kCoin):
+					numCoinsHit++;
+					//printf("Coint count: %d\n", coinCount);
+					ent->handleCollisions();
+					ent->dead = true;
+					break;
+				case(kKey):
+					numKeysHit++;
+					//printf("Coint count: %d\n", coinCount);
+					ent->handleCollisions();
+					ent->dead = true;
+					break;
+				case(kBird):
+					ent->handleCollisions();
+					break;
+				case(kKnight):
+					ent->handleCollisions();
+					break;
 
 
+				}
 			}
 
 		}
@@ -169,6 +173,12 @@ int Arrow::getNumCoinsHit() {
 	int coins = numCoinsHit;
 	numCoinsHit = 0;
 	return coins;
+}
+
+int Arrow::getNumKeysHit() {
+	int keys = numCoinsHit;
+	numCoinsHit = 0;
+	return keys;
 }
 
 void Arrow::loadtexture(const char* name, int tilex, int tiley) {

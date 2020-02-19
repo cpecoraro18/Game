@@ -1,4 +1,5 @@
 #include "EndLevel.h"
+#include "GameState.h"
 
 EndLevel::EndLevel(GameDataRef data, float x, float y, float h, float w) : Entity(x, y, h, w, 1, 0, data) {
 	type_ = kEndLevel;
@@ -36,7 +37,7 @@ void EndLevel::draw() {
 	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 }
 
-void EndLevel::update(std::vector<class Entity*>& collidables, float dt) {
+void EndLevel::update(World* world) {
 	hitbox->setDimentions(position->x, position->y);
 	return;
 }
@@ -45,6 +46,6 @@ void EndLevel::handleinput(SDL_Event event, const Uint8* keystate) {
 }
 
 void EndLevel::handleCollisions(Player* player, int onx) {
-
+	data->machine.AddState(StateRef(new GameState(data, nextLevel)));
 
 }

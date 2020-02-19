@@ -12,7 +12,7 @@ public:
 	Coin(GameDataRef data, float x, float y, float h, float w, int nFrames, int frameSpeed);
 	~Coin();
 
-	void update(std::vector<class Entity*>& collidables, float dt) override;
+	void update(World* world) override;
 	void handleinput(SDL_Event event, const Uint8 *keystate);
 	void handleCollisions();
 	void draw();

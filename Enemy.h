@@ -13,7 +13,7 @@ public:
 	Enemy() {}
 	~Enemy() {}
 
-	virtual void update(std::vector<class Entity*>& collidables, float dt, Player* player) {}
+	virtual void update(World* world) {}
 	void draw() {}
 	void handleCollisions() {}
 	void Animate() {}

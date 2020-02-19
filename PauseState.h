@@ -18,7 +18,7 @@ public:
 	bool Init();
 
 	void HandleInput();
-	void Update(float dt);
+	void Update();
 	void Draw();
 	void HandleClick(int x, int y);
 

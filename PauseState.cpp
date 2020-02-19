@@ -15,7 +15,7 @@ PauseState::~PauseState() {
 }
 
 bool PauseState::Init() {
-	
+	SDL_ShowCursor(SDL_ENABLE);
 	resumeButton = new Button(data, SCREEN_WIDTH / 2 - BUTTON_WIDTH/2, SCREEN_HEIGHT / 3 , 
 		BUTTON_SPRITE_WIDTH, BUTTON_SPRITE_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
 	resumeButton->loadtexture("resume button", 0, 0);
@@ -60,7 +60,7 @@ void PauseState::HandleInput() {
 void PauseState::HandleClick(int x, int y) {
 	if (x > resumeButton->dest.x&& x < resumeButton->dest.x + resumeButton->dest.w && y > resumeButton->dest.y&& y < resumeButton->dest.y + resumeButton->dest.h) {
 		resumeButton->handleClick();
-
+		SDL_ShowCursor(SDL_DISABLE);
 		data->machine.RemoveState();
 		SDL_Delay(100);
 	}
@@ -72,7 +72,7 @@ void PauseState::HandleClick(int x, int y) {
 	}
 }
 
-void PauseState::Update(float dt) {
+void PauseState::Update() {
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 	for (auto button : buttons) {

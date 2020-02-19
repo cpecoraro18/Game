@@ -88,7 +88,7 @@ void MenuState::HandleClick(int x, int y) {
 		SDL_Delay(100);
 	}
 }
-void MenuState::Update(float dt) {
+void MenuState::Update() {
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 	for (auto button : buttons) {

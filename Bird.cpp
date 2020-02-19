@@ -20,6 +20,7 @@ Bird::Bird(int x, int y, int h, int w, int nFrames, int frameSpeed, GameDataRef 
 
 	frames = nFrames;
 	speed = frameSpeed;
+	goLeft();
 }
 
 Bird::~Bird() { 
@@ -27,12 +28,16 @@ Bird::~Bird() {
 	delete hitbox;
 }
 
-void Bird::update(std::vector<class Entity*>& collidables, float dt, Player* player) {
-	Entity::update(collidables, dt);
+void Bird::update(World* world) {
+	Entity::update(world);
+	if (position->x < 0 || position->x + width > world->worldWidth) {
+		acceleration->x *= -1;
+		velocity->x *= -1;
+	}
 	position->x += velocity->x;
 	hitbox->setDimentions(position->x, position->y);
 	if (animated) {
-		Entity::Animate();
+		Animate();
 	}
 	return;
 }
@@ -55,14 +60,21 @@ void Bird::handleCollisions() {
 }
 
 void Bird::Animate() {
+	if (velocity->x > 0) {
+		src.y = 1*32;
+	}
+	else {
+		src.y = 0;
+	}
 	Entity::Animate();
+	
 }
 
 void Bird::goLeft() {
-	velocity->x = -1.0f;
+	velocity->x = -3.0f;
 }
 void Bird::goRight() {
-	velocity->x = 1.0f;
+	velocity->x = 3.0f;
 }
 
 

@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 #include "AABB.h"
+#include "World.h"
 #include <vector>
 
 
@@ -18,11 +19,12 @@ public:
 	void loadtexture(const char* name, int tilex, int tiley);
 	void loadHitboxTexture(const char* name, int tilex, int tiley);
 
-	void update(std::vector<class Entity*>& collidables, float dt);
+	void update(World* world);
 	void handleCollisions(std::vector<class Entity*>& collidables);
 	void handleinput(SDL_Event event);
 	void draw();
 	int getNumCoinsHit();
+	int getNumKeysHit();
 
 
 	bool dead;
@@ -37,7 +39,7 @@ private:
 	AABB* hitbox;
 
 	int numCoinsHit;
-	
+	int numKeysHit;
 	
 	int frames;
 	int speed;

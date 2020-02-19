@@ -14,7 +14,7 @@ public:
 
 	~Bird();
 
-	void update(std::vector<class Entity*>& collidables, float dt, Player* player);
+	void update(World* world) override;
 	void draw();
 	void handleCollisions();
 	void Animate();

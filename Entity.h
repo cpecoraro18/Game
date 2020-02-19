@@ -10,7 +10,7 @@
 #include "AABB.h"
 #include "Collision.h"
 
-
+class World;
 
 class Entity {
 public:
@@ -20,7 +20,7 @@ public:
 
 	virtual ~Entity();
 
-	virtual void update(std::vector<class Entity*>& collidables, float dt);
+	virtual void update(World* world);
 	virtual void draw() = 0;
 	virtual void handleinput(SDL_Event event, const Uint8* keystate) {}
 	virtual void Animate();
