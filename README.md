@@ -8,6 +8,8 @@ This game is still in progress, and I'm using it to explore multiple different p
 ![Game-Image](Assets/PromoPic.png)
 
 ![Alt Text](Assets/GameDemo.gif)
+![Alt Text](Assets/GameKnightDemo.gif)
+![Alt Text](Assets/GameMenuDemo.gif)
 
 ## Technologies
 C++ SDL2
