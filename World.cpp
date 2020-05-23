@@ -170,7 +170,7 @@ void World::LoadCharacters(std::string path) {
 				enemies.push_back(ent);
 				break;
 			case 39:
-				ent = new Knight(col * BLOCK_SIZE, row * BLOCK_SIZE - 200, 200, 200, 3, 100, data);
+				ent = new Knight(col * BLOCK_SIZE, row * BLOCK_SIZE -100, 200, 200, 3, 100, data);
 				enemies.push_back(ent);
 				break;
 			default:

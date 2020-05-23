@@ -53,7 +53,7 @@ void Knight::update(World* world) {
 		velocity->y = -1 * knightmaxSpeed->y;
 	}
 
-	if (hitbox->leftside < 0 || hitbox->rightside  > 5500) {
+	if (hitbox->leftside - data->camera.x < 0 || hitbox->rightside - data->camera.x > data->camera.w) {
 		position->x -= velocity->x;
 		velocity->x = velocity->x*-1;
 		acceleration->x = acceleration->x * -1;
@@ -91,7 +91,7 @@ void Knight::draw() {
 	destHitbox.y = position->y + hitboxYBuffer - data->camera.y;
 
 	data->texmanager.Draw(texture, src, dest, data->renderer);
-	data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
+	//data->texmanager.Draw(hitboxTexture, srcHitbox, destHitbox, data->renderer);
 
 }
 
@@ -114,7 +114,7 @@ void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx) 
 					position->x -= velocity->x;
 					velocity->x = velocity->x * -1;
 					acceleration->x = acceleration->x * -1;
-					//printf("Right");
+					printf("Right");
 					return;
 				}
 				if (velocity->x < 0 && onx == 1) {
@@ -122,7 +122,7 @@ void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx) 
 					position->x -= velocity->x;
 					velocity->x = velocity->x * -1;
 					acceleration->x = acceleration->x * -1;
-					//printf("Left");
+					printf("Left");
 					return;
 				}
 				if (velocity->y > 0 && onx == 0) {
@@ -141,7 +141,7 @@ void Knight::handleCollisions(std::vector<class Entity*>& collidables, int onx) 
 					// collision occurred on the top
 					position->y -= velocity->y;
 					velocity->y = 0;
-					//printf("Top");
+					printf("Top");
 					return;
 				}
 				break;

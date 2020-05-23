@@ -36,7 +36,7 @@ bool MapState::Init() {
 	LevelButton* level1Button = new LevelButton(data, SCREEN_WIDTH/6, SCREEN_HEIGHT/2, 32, 32, 32, 32, "Intro Level");
 	level1Button->loadtexture( "location", 0, 0);
 	levels.push_back(level1Button);
-	LevelButton* level2Button = new LevelButton(data, SCREEN_WIDTH / 6, 2*SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level2");
+	LevelButton* level2Button = new LevelButton(data, SCREEN_WIDTH / 6, 2*SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level1");
 	level2Button->loadtexture("location", 0, 0);
 	levels.push_back(level2Button);
 	LevelButton* level3Button = new LevelButton(data, SCREEN_WIDTH / 6, 2.5 * SCREEN_HEIGHT / 3, 32, 32, 32, 32, "Level3");
