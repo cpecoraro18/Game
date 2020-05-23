@@ -7,6 +7,7 @@ This is a 2d platformer game and game engine created using C++ and SDL. The game
 This game is still in progress, and I'm using it to explore multiple different programming techniques and patterns.
 ![Game-Image](Assets/PromoPic.png)
 
+![Alt Text](Assets/GameDemo.gif)
 
 ## Technologies
 C++ SDL2
