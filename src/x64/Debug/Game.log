@@ -1,0 +1,10 @@
+﻿  Bird.cpp
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,29): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,26): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(6,20): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(49,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(50,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(51,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\Game\Bird.cpp(52,29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Game.vcxproj -> C:\Users\Chris\Documents\Visual Studio 2015\Projects\Game\x64\Debug\Game.exe
